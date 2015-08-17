@@ -4,9 +4,13 @@ use GatherContent\ConfigValueObject\Config;
 
 class ConfigTest extends PHPUnit_Framework_TestCase
 {
-    public function testValidConfig()
+    private $fullConfig;
+
+    public function setUp()
     {
-        $expected = $originalConfig = [
+        parent::setUp();
+
+        $this->fullConfig = [
             (object)[
                 'label' => 'Content',
                 'name' => 'tab1',
@@ -167,28 +171,14 @@ class ConfigTest extends PHPUnit_Framework_TestCase
                 ],
             ],
         ];
-
-        $config = new Config($originalConfig);
-        $result = $config->toArray();
-
-        $this->assertEquals($expected, $result);
     }
 
-    public function testCastingToArray()
+    public function testFullConfig()
     {
-        $expected = $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [],
-            ],
-        ];
-
-        $config = new Config($originalConfig);
+        $config = new Config($this->fullConfig);
         $result = $config->toArray();
 
-        $this->assertEquals($expected, $result);
+        $this->assertEquals($this->fullConfig, $result);
     }
 
     public function testCastingToString()
@@ -212,17 +202,8 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testEqual()
     {
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [],
-            ],
-        ];
-
-        $config1 = new Config($originalConfig);
-        $config2 = new Config($originalConfig);
+        $config1 = new Config($this->fullConfig);
+        $config2 = new Config($this->fullConfig);
 
         $result = $config1->equals($config2);
 
@@ -298,2783 +279,976 @@ class ConfigTest extends PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                //'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [],
-            ],
-        ];
+        unset($this->fullConfig[0]->label);
 
-        $config = new Config($originalConfig);
+        $config = new Config($this->fullConfig);
     }
 
     public function testMissingName()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                //'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [],
-            ],
-        ];
+        unset($this->fullConfig[0]->name);
 
-        $config = new Config($originalConfig);
+        $config = new Config($this->fullConfig);
     }
 
     public function testMissingHidden()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                //'hidden' => false,
-                'elements' => [],
-            ],
-        ];
+        unset($this->fullConfig[0]->hidden);
 
-        $config = new Config($originalConfig);
+        $config = new Config($this->fullConfig);
     }
 
     public function testMissingElements()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                //'elements' => [],
-            ],
-        ];
+        unset($this->fullConfig[0]->elements);
 
-        $config = new Config($originalConfig);
+        $config = new Config($this->fullConfig);
     }
 
     public function testAdditionalAttribute()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [],
-                'this' => 'shouldn\'t be here',
-            ],
-        ];
+        $this->fullConfig[0]->this = 'shouldn\'t be here';
 
-        $config = new Config($originalConfig);
+        $config = new Config($this->fullConfig);
     }
 
     public function testInvalidLabel()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => true,
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [],
-            ],
-        ];
+        $this->fullConfig[0]->label = true;
 
-        $config = new Config($originalConfig);
+        $config = new Config($this->fullConfig);
     }
 
     public function testInvalidName()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => null,
-                'hidden' => false,
-                'elements' => [],
-            ],
-        ];
+        $this->fullConfig[0]->name = false;
 
-        $config = new Config($originalConfig);
+        $config = new Config($this->fullConfig);
     }
 
     public function testInvalidHidden()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => 'false',
-                'elements' => [],
-            ],
-        ];
+        $this->fullConfig[0]->hidden = 'false';
 
-        $config = new Config($originalConfig);
+        $config = new Config($this->fullConfig);
     }
 
     public function testInvalidElements()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => null,
-            ],
-        ];
+        $this->fullConfig[0]->elements = null;
 
-        $config = new Config($originalConfig);
+        $config = new Config($this->fullConfig);
     }
 
     public function testEmptyLabel()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => '',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [],
-            ],
-        ];
+        $this->fullConfig[0]->label = '';
 
-        $config = new Config($originalConfig);
+        $config = new Config($this->fullConfig);
     }
 
     public function testEmptyName()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => '',
-                'hidden' => false,
-                'elements' => [],
-            ],
-        ];
+        $this->fullConfig[0]->name = '';
 
-        $config = new Config($originalConfig);
+        $config = new Config($this->fullConfig);
     }
 
     public function testNonUniqueTabNames()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [],
-            ],
-            (object)[
-                'label' => 'Meta',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [],
-            ],
-        ];
+        $this->fullConfig[0]->name = 'tab1';
+        $this->fullConfig[1]->name = 'tab1';
 
-        $config = new Config($originalConfig);
+        $config = new Config($this->fullConfig);
     }
 
     public function testRandomElements()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => ['a', 's', 'd', 'f'],
-            ],
-        ];
+        $this->fullConfig[0]->elements = ['a', 's', 'd', 'f'];
 
-        $config = new Config($originalConfig);
+        $config = new Config($this->fullConfig);
     }
 
     public function testMissingElementType()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        //'type' => 'text',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'value' => '<p>How goes it?</p>',
-                        'microcopy' => 'Microcopy',
-                        'limit_type' => 'words',
-                        'limit' => 50,
-                        'plain_text' => false,
-                    ],
-                ],
-            ],
-        ];
+        unset($this->fullConfig[0]->elements[0]->type);
 
-        $config = new Config($originalConfig);
+        $config = new Config($this->fullConfig);
     }
 
     public function testMissingElementName()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'text',
-                        //'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'value' => '<p>How goes it?</p>',
-                        'microcopy' => 'Microcopy',
-                        'limit_type' => 'words',
-                        'limit' => 50,
-                        'plain_text' => false,
-                    ],
-                ],
-            ],
-        ];
+        unset($this->fullConfig[0]->elements[0]->name);
 
-        $config = new Config($originalConfig);
+        $config = new Config($this->fullConfig);
     }
 
     public function testInvalidElementType()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'asdf',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'value' => '<p>How goes it?</p>',
-                        'microcopy' => 'Microcopy',
-                        'limit_type' => 'words',
-                        'limit' => 50,
-                        'plain_text' => false,
-                    ],
-                ],
-            ],
-        ];
+        $this->fullConfig[0]->elements[0]->type = 'asdf';
 
-        $config = new Config($originalConfig);
+        $config = new Config($this->fullConfig);
     }
 
     public function testInvalidElementName()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'text',
-                        'name' => 12345,
-                        'required' => false,
-                        'label' => 'Label',
-                        'value' => '<p>How goes it?</p>',
-                        'microcopy' => 'Microcopy',
-                        'limit_type' => 'words',
-                        'limit' => 50,
-                        'plain_text' => false,
-                    ],
-                ],
-            ],
-        ];
+        $this->fullConfig[0]->elements[0]->name = 12345;
 
-        $config = new Config($originalConfig);
+        $config = new Config($this->fullConfig);
     }
 
     public function testMissingTextRequired()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'text',
-                        'name' => 'el12345',
-                        //'required' => false,
-                        'label' => 'Label',
-                        'value' => '<p>How goes it?</p>',
-                        'microcopy' => 'Microcopy',
-                        'limit_type' => 'words',
-                        'limit' => 50,
-                        'plain_text' => false,
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
-        $config = new Config($originalConfig);
+        unset($this->fullConfig[0]->elements[0]->required);
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testMissingTextLabel()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'text',
-                        'name' => 'el12345',
-                        'required' => false,
-                        //'label' => 'Label',
-                        'value' => '<p>How goes it?</p>',
-                        'microcopy' => 'Microcopy',
-                        'limit_type' => 'words',
-                        'limit' => 50,
-                        'plain_text' => false,
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
-        $config = new Config($originalConfig);
+        unset($this->fullConfig[0]->elements[0]->label);
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testMissingTextValue()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'text',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        //'value' => '<p>How goes it?</p>',
-                        'microcopy' => 'Microcopy',
-                        'limit_type' => 'words',
-                        'limit' => 50,
-                        'plain_text' => false,
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
-        $config = new Config($originalConfig);
+        unset($this->fullConfig[0]->elements[0]->value);
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testMissingTextMicrocopy()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'text',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'value' => '<p>How goes it?</p>',
-                        //'microcopy' => 'Microcopy',
-                        'limit_type' => 'words',
-                        'limit' => 50,
-                        'plain_text' => false,
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
-        $config = new Config($originalConfig);
+        unset($this->fullConfig[0]->elements[0]->microcopy);
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testMissingTextLimitType()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'text',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'value' => '<p>How goes it?</p>',
-                        'microcopy' => 'Microcopy',
-                        //'limit_type' => 'words',
-                        'limit' => 50,
-                        'plain_text' => false,
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
-        $config = new Config($originalConfig);
+        unset($this->fullConfig[0]->elements[0]->limit_type);
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testMissingTextLimit()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'text',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'value' => '<p>How goes it?</p>',
-                        'microcopy' => 'Microcopy',
-                        'limit_type' => 'words',
-                        //'limit' => 50,
-                        'plain_text' => false,
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
-        $config = new Config($originalConfig);
+        unset($this->fullConfig[0]->elements[0]->limit);
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testMissingTextPlainText()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'text',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'value' => '<p>How goes it?</p>',
-                        'microcopy' => 'Microcopy',
-                        'limit_type' => 'words',
-                        'limit' => 50,
-                        //'plain_text' => false,
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
-        $config = new Config($originalConfig);
+        unset($this->fullConfig[0]->elements[0]->plain_text);
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testAdditionalTextAttribute()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'text',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'value' => '<p>How goes it?</p>',
-                        'microcopy' => 'Microcopy',
-                        'limit_type' => 'words',
-                        'limit' => 50,
-                        'plain_text' => false,
-                        'this' => 'shouldn\'t be here',
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[0]->elements[0]->this = 'shouldn\'t be here';
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testInvalidTextRequired()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'text',
-                        'name' => 'el12345',
-                        'required' => 'false',
-                        'label' => 'Label',
-                        'value' => '<p>How goes it?</p>',
-                        'microcopy' => 'Microcopy',
-                        'limit_type' => 'words',
-                        'limit' => 50,
-                        'plain_text' => false,
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[0]->elements[0]->required = 'false';
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testInvalidTextLabel()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'text',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => null,
-                        'value' => '<p>How goes it?</p>',
-                        'microcopy' => 'Microcopy',
-                        'limit_type' => 'words',
-                        'limit' => 50,
-                        'plain_text' => false,
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[0]->elements[0]->label = false;
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testInvalidTextValue()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'text',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'value' => ['test'],
-                        'microcopy' => 'Microcopy',
-                        'limit_type' => 'words',
-                        'limit' => 50,
-                        'plain_text' => false,
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[0]->elements[0]->value = ['test'];
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testInvalidTextMicrocopy()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'text',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'value' => '<p>How goes it?</p>',
-                        'microcopy' => null,
-                        'limit_type' => 'words',
-                        'limit' => 50,
-                        'plain_text' => false,
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[0]->elements[0]->microcopy = false;
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testInvalidTextLimitType()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'text',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'value' => '<p>How goes it?</p>',
-                        'microcopy' => 'Microcopy',
-                        'limit_type' => 'characters',
-                        'limit' => 50,
-                        'plain_text' => false,
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[0]->elements[0]->limit_type = 'characters';
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testInvalidTextLimit()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'text',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'value' => '<p>How goes it?</p>',
-                        'microcopy' => 'Microcopy',
-                        'limit_type' => 'words',
-                        'limit' => -50,
-                        'plain_text' => false,
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[0]->elements[0]->limit = -50;
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testInvalidTextPlainText()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'text',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'value' => '<p>How goes it?</p>',
-                        'microcopy' => 'Microcopy',
-                        'limit_type' => 'words',
-                        'limit' => 50,
-                        'plain_text' => 'false',
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[0]->elements[0]->plain_text = 'false';
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testMissingFilesRequired()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'files',
-                        'name' => 'el12345',
-                        //'required' => false,
-                        'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('files', $this->fullConfig[0]->elements[2]->type);
 
-        $config = new Config($originalConfig);
+        unset($this->fullConfig[0]->elements[2]->required);
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testMissingFilesLabel()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'files',
-                        'name' => 'el12345',
-                        'required' => false,
-                        //'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('files', $this->fullConfig[0]->elements[2]->type);
 
-        $config = new Config($originalConfig);
+        unset($this->fullConfig[0]->elements[2]->label);
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testMissingFilesMicrocopy()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'files',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        //'microcopy' => 'Microcopy',
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('files', $this->fullConfig[0]->elements[2]->type);
 
-        $config = new Config($originalConfig);
+        unset($this->fullConfig[0]->elements[2]->microcopy);
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testAdditionalFilesAttribute()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'files',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                        'this' => 'shouldn\'t be here',
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('files', $this->fullConfig[0]->elements[2]->type);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[0]->elements[2]->this = 'shouldn\'t be here';
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testInvalidFilesRequired()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'files',
-                        'name' => 'el12345',
-                        'required' => 'false',
-                        'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('files', $this->fullConfig[0]->elements[2]->type);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[0]->elements[2]->required = 'false';
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testInvalidFilesLabel()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'files',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => null,
-                        'microcopy' => 'Microcopy',
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('files', $this->fullConfig[0]->elements[2]->type);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[0]->elements[2]->label = false;
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testInvalidFilesMicrocopy()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'files',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'microcopy' => null,
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('files', $this->fullConfig[0]->elements[2]->type);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[0]->elements[2]->microcopy = false;
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testMissingSectionTitle()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'section',
-                        'name' => 'el12345',
-                        //'title' => 'Title',
-                        'subtitle' => '<p>How goes it?</p>',
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('section', $this->fullConfig[0]->elements[3]->type);
 
-        $config = new Config($originalConfig);
+        unset($this->fullConfig[0]->elements[3]->title);
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testMissingSectionSubtitle()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'section',
-                        'name' => 'el12345',
-                        'title' => 'Title',
-                        //'subtitle' => '<p>How goes it?</p>',
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('section', $this->fullConfig[0]->elements[3]->type);
 
-        $config = new Config($originalConfig);
+        unset($this->fullConfig[0]->elements[3]->subtitle);
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testAdditionalSectionAttribute()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'section',
-                        'name' => 'el12345',
-                        'title' => 'Title',
-                        'subtitle' => '<p>How goes it?</p>',
-                        'this' => 'shouldn\'t be here',
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('section', $this->fullConfig[0]->elements[3]->type);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[0]->elements[3]->this = 'shouldn\'t be here';
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testInvalidSectionTitle()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'section',
-                        'name' => 'el12345',
-                        'title' => null,
-                        'subtitle' => '<p>How goes it?</p>',
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('section', $this->fullConfig[0]->elements[3]->type);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[0]->elements[3]->title = null;
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testInvalidSectionSubtitle()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'section',
-                        'name' => 'el12345',
-                        'title' => 'Title',
-                        'subtitle' => null,
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('section', $this->fullConfig[0]->elements[3]->type);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[0]->elements[3]->subtitle = null;
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testMissingChoiceRadioRequired()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_radio',
-                        'name' => 'el12345',
-                        //'required' => false,
-                        'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                        'other_option' => true,
-                        'options' => [
-                            (object)[
-                                'name' => 'op6',
-                                'label' => 'First choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op7',
-                                'label' => 'Second choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op8',
-                                'label' => 'Other',
-                                'selected' => true,
-                                'value' => 'How goes it?',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
-        $config = new Config($originalConfig);
+        unset($this->fullConfig[1]->elements[0]->required);
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testMissingChoiceRadioLabel()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_radio',
-                        'name' => 'el12345',
-                        'required' => false,
-                        //'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                        'other_option' => true,
-                        'options' => [
-                            (object)[
-                                'name' => 'op6',
-                                'label' => 'First choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op7',
-                                'label' => 'Second choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op8',
-                                'label' => 'Other',
-                                'selected' => true,
-                                'value' => 'How goes it?',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
-        $config = new Config($originalConfig);
+        unset($this->fullConfig[1]->elements[0]->label);
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testMissingChoiceRadioMicrocopy()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_radio',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        //'microcopy' => 'Microcopy',
-                        'other_option' => true,
-                        'options' => [
-                            (object)[
-                                'name' => 'op6',
-                                'label' => 'First choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op7',
-                                'label' => 'Second choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op8',
-                                'label' => 'Other',
-                                'selected' => true,
-                                'value' => 'How goes it?',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
-        $config = new Config($originalConfig);
+        unset($this->fullConfig[1]->elements[0]->microcopy);
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testMissingChoiceRadioOtherOption()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_radio',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                        //'other_option' => true,
-                        'options' => [
-                            (object)[
-                                'name' => 'op6',
-                                'label' => 'First choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op7',
-                                'label' => 'Second choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op8',
-                                'label' => 'Other',
-                                'selected' => true,
-                                'value' => 'How goes it?',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
-        $config = new Config($originalConfig);
+        unset($this->fullConfig[1]->elements[0]->other_option);
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testMissingChoiceRadioOptions()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_radio',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                        'other_option' => true,
-                        /*'options' => [
-                            (object)[
-                                'name' => 'op6',
-                                'label' => 'First choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op7',
-                                'label' => 'Second choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op8',
-                                'label' => 'Other',
-                                'selected' => true,
-                                'value' => 'How goes it?',
-                            ],
-                        ],*/
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
-        $config = new Config($originalConfig);
+        unset($this->fullConfig[1]->elements[0]->options);
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testMissingChoiceRadioOptionName()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_radio',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                        'other_option' => true,
-                        'options' => [
-                            (object)[
-                                //'name' => 'op6',
-                                'label' => 'First choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op7',
-                                'label' => 'Second choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op8',
-                                'label' => 'Other',
-                                'selected' => true,
-                                'value' => 'How goes it?',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
-        $config = new Config($originalConfig);
+        unset($this->fullConfig[1]->elements[0]->options[0]->name);
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testMissingChoiceRadioOptionLabel()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_radio',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                        'other_option' => true,
-                        'options' => [
-                            (object)[
-                                'name' => 'op6',
-                                //'label' => 'First choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op7',
-                                'label' => 'Second choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op8',
-                                'label' => 'Other',
-                                'selected' => true,
-                                'value' => 'How goes it?',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
-        $config = new Config($originalConfig);
+        unset($this->fullConfig[1]->elements[0]->options[0]->label);
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testMissingChoiceRadioOptionSelected()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_radio',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                        'other_option' => true,
-                        'options' => [
-                            (object)[
-                                'name' => 'op6',
-                                'label' => 'First choice',
-                                //'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op7',
-                                'label' => 'Second choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op8',
-                                'label' => 'Other',
-                                'selected' => true,
-                                'value' => 'How goes it?',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
-        $config = new Config($originalConfig);
+        unset($this->fullConfig[1]->elements[0]->options[0]->selected);
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testAdditionalChoiceRadioAttribute()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_radio',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                        'other_option' => true,
-                        'options' => [
-                            (object)[
-                                'name' => 'op6',
-                                'label' => 'First choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op7',
-                                'label' => 'Second choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op8',
-                                'label' => 'Other',
-                                'selected' => true,
-                                'value' => 'How goes it?',
-                            ],
-                        ],
-                        'this' => 'shouldn\'t be here',
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[1]->elements[0]->this = 'shouldn\'t be here';
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testAdditionalChoiceRadioOptionAttribute()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_radio',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                        'other_option' => true,
-                        'options' => [
-                            (object)[
-                                'name' => 'op6',
-                                'label' => 'First choice',
-                                'selected' => false,
-                                'this' => 'shouldn\'t be here',
-                            ],
-                            (object)[
-                                'name' => 'op7',
-                                'label' => 'Second choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op8',
-                                'label' => 'Other',
-                                'selected' => true,
-                                'value' => 'How goes it?',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[1]->elements[0]->options[0]->this = 'shouldn\'t be here';
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testAdditionalChoiceRadioOtherOptionAttribute()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_radio',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                        'other_option' => true,
-                        'options' => [
-                            (object)[
-                                'name' => 'op6',
-                                'label' => 'First choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op7',
-                                'label' => 'Second choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op8',
-                                'label' => 'Other',
-                                'selected' => true,
-                                'value' => 'How goes it?',
-                                'this' => 'shouldn\'t be here',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[1]->type);
+        $this->assertTrue($this->fullConfig[1]->elements[1]->other_option);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[1]->elements[1]->options[2]->this = 'shouldn\'t be here';
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testInvalidChoiceRadioRequired()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_radio',
-                        'name' => 'el12345',
-                        'required' => 'false',
-                        'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                        'other_option' => true,
-                        'options' => [
-                            (object)[
-                                'name' => 'op6',
-                                'label' => 'First choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op7',
-                                'label' => 'Second choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op8',
-                                'label' => 'Other',
-                                'selected' => true,
-                                'value' => 'How goes it?',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[1]->elements[0]->required = 'false';
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testInvalidChoiceRadioLabel()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_radio',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => null,
-                        'microcopy' => 'Microcopy',
-                        'other_option' => true,
-                        'options' => [
-                            (object)[
-                                'name' => 'op6',
-                                'label' => 'First choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op7',
-                                'label' => 'Second choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op8',
-                                'label' => 'Other',
-                                'selected' => true,
-                                'value' => 'How goes it?',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[1]->elements[0]->label = false;
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testInvalidChoiceRadioMicrocopy()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_radio',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'microcopy' => null,
-                        'other_option' => true,
-                        'options' => [
-                            (object)[
-                                'name' => 'op6',
-                                'label' => 'First choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op7',
-                                'label' => 'Second choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op8',
-                                'label' => 'Other',
-                                'selected' => true,
-                                'value' => 'How goes it?',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[1]->elements[0]->microcopy = false;
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testInvalidChoiceRadioOtherOption()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_radio',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                        'other_option' => 'true',
-                        'options' => [
-                            (object)[
-                                'name' => 'op6',
-                                'label' => 'First choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op7',
-                                'label' => 'Second choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op8',
-                                'label' => 'Other',
-                                'selected' => true,
-                                'value' => 'How goes it?',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[1]->elements[0]->other_option = 'false';
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testInvalidChoiceRadioOptions()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_radio',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                        'other_option' => 'true',
-                        'options' => 'none',
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[1]->elements[0]->options = 'none';
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testInvalidChoiceRadioOptionName()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_radio',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                        'other_option' => 'true',
-                        'options' => [
-                            (object)[
-                                'name' => 6,
-                                'label' => 'First choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op7',
-                                'label' => 'Second choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op8',
-                                'label' => 'Other',
-                                'selected' => true,
-                                'value' => 'How goes it?',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[1]->elements[0]->options[0]->name = 1;
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testInvalidChoiceRadioOptionLabel()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_radio',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                        'other_option' => 'true',
-                        'options' => [
-                            (object)[
-                                'name' => 'op6',
-                                'label' => null,
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op7',
-                                'label' => 'Second choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op8',
-                                'label' => 'Other',
-                                'selected' => true,
-                                'value' => 'How goes it?',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[1]->elements[0]->options[0]->label = false;
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testInvalidChoiceRadioOptionSelected()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_radio',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                        'other_option' => 'true',
-                        'options' => [
-                            (object)[
-                                'name' => 'op6',
-                                'label' => 'First choice',
-                                'selected' => 'false',
-                            ],
-                            (object)[
-                                'name' => 'op7',
-                                'label' => 'Second choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op8',
-                                'label' => 'Other',
-                                'selected' => true,
-                                'value' => 'How goes it?',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[1]->elements[0]->options[0]->selected = 'false';
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testInvalidChoiceRadioOptionValues()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_radio',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                        'other_option' => 'true',
-                        'options' => [
-                            (object)[
-                                'name' => 'op6',
-                                'label' => 'First choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op7',
-                                'label' => 'Second choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op8',
-                                'label' => 'Other',
-                                'selected' => true,
-                                'value' => null,
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[1]->type);
+        $this->assertTrue($this->fullConfig[1]->elements[1]->other_option);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[1]->elements[1]->options[2]->value = false;
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testMissingChoiceCheckboxRequired()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_checkbox',
-                        'name' => 'el12345',
-                        //'required' => false,
-                        'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                        'options' => [
-                            (object)[
-                                'name' => 'op6',
-                                'label' => 'First choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op7',
-                                'label' => 'Second choice',
-                                'selected' => false,
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
-        $config = new Config($originalConfig);
+        unset($this->fullConfig[1]->elements[3]->required);
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testMissingChoiceCheckboxLabel()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_checkbox',
-                        'name' => 'el12345',
-                        'required' => false,
-                        //'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                        'options' => [
-                            (object)[
-                                'name' => 'op6',
-                                'label' => 'First choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op7',
-                                'label' => 'Second choice',
-                                'selected' => false,
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
-        $config = new Config($originalConfig);
+        unset($this->fullConfig[1]->elements[3]->label);
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testMissingChoiceCheckboxMicrocopy()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_checkbox',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        //'microcopy' => 'Microcopy',
-                        'options' => [
-                            (object)[
-                                'name' => 'op6',
-                                'label' => 'First choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op7',
-                                'label' => 'Second choice',
-                                'selected' => false,
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
-        $config = new Config($originalConfig);
+        unset($this->fullConfig[1]->elements[3]->microcopy);
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testMissingChoiceCheckboxOptions()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_checkbox',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                        /*'options' => [
-                            (object)[
-                                'name' => 'op6',
-                                'label' => 'First choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op7',
-                                'label' => 'Second choice',
-                                'selected' => false,
-                            ],
-                        ],*/
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
-        $config = new Config($originalConfig);
+        unset($this->fullConfig[1]->elements[3]->options);
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testMissingChoiceCheckboxOptionName()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_checkbox',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                        'options' => [
-                            (object)[
-                                //'name' => 'op6',
-                                'label' => 'First choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op7',
-                                'label' => 'Second choice',
-                                'selected' => false,
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
-        $config = new Config($originalConfig);
+        unset($this->fullConfig[1]->elements[3]->options[0]->name);
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testMissingChoiceCheckboxOptionLabel()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_checkbox',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                        'options' => [
-                            (object)[
-                                'name' => 'op6',
-                                //'label' => 'First choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op7',
-                                'label' => 'Second choice',
-                                'selected' => false,
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
-        $config = new Config($originalConfig);
+        unset($this->fullConfig[1]->elements[3]->options[0]->label);
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testMissingChoiceCheckboxOptionSelected()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_checkbox',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                        'options' => [
-                            (object)[
-                                'name' => 'op6',
-                                'label' => 'First choice',
-                                //'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op7',
-                                'label' => 'Second choice',
-                                'selected' => false,
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
-        $config = new Config($originalConfig);
+        unset($this->fullConfig[1]->elements[3]->options[0]->selected);
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testAdditionalChoiceCheckboxAttribute()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_checkbox',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                        'options' => [
-                            (object)[
-                                'name' => 'op6',
-                                'label' => 'First choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op7',
-                                'label' => 'Second choice',
-                                'selected' => false,
-                            ],
-                        ],
-                        'this' => 'shouldn\'t be here',
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[1]->elements[3]->this = 'shouldn\'t be here';
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testAdditionalChoiceCheckboxOptionAttribute()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_checkbox',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                        'options' => [
-                            (object)[
-                                'name' => 'op6',
-                                'label' => 'First choice',
-                                'selected' => false,
-                                'this' => 'shouldn\'t be here',
-                            ],
-                            (object)[
-                                'name' => 'op7',
-                                'label' => 'Second choice',
-                                'selected' => false,
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[1]->elements[3]->options[0]->this = 'shouldn\'t be here';
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testInvalidChoiceCheckboxRequired()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_checkbox',
-                        'name' => 'el12345',
-                        'required' => 'false',
-                        'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                        'options' => [
-                            (object)[
-                                'name' => 'op6',
-                                'label' => 'First choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op7',
-                                'label' => 'Second choice',
-                                'selected' => false,
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[1]->elements[3]->required = 'false';
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testInvalidChoiceCheckboxLabel()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_checkbox',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => null,
-                        'microcopy' => 'Microcopy',
-                        'options' => [
-                            (object)[
-                                'name' => 'op6',
-                                'label' => 'First choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op7',
-                                'label' => 'Second choice',
-                                'selected' => false,
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[1]->elements[3]->label = false;
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testInvalidChoiceCheckboxMicrocopy()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_checkbox',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'microcopy' => null,
-                        'options' => [
-                            (object)[
-                                'name' => 'op6',
-                                'label' => 'First choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op7',
-                                'label' => 'Second choice',
-                                'selected' => false,
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[1]->elements[3]->microcopy = false;
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testInvalidChoiceCheckboxOptions()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_checkbox',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'microcopy' => null,
-                        'options' => 'asdf',
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[1]->elements[3]->options = 'asdf';
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testInvalidChoiceCheckboxOptionName()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_checkbox',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                        'options' => [
-                            (object)[
-                                'name' => 6,
-                                'label' => 'First choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op7',
-                                'label' => 'Second choice',
-                                'selected' => false,
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[1]->elements[3]->options[0]->name = 6;
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testInvalidChoiceCheckboxOptionLabel()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_checkbox',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                        'options' => [
-                            (object)[
-                                'name' => 'op6',
-                                'label' => null,
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op7',
-                                'label' => 'Second choice',
-                                'selected' => false,
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[1]->elements[3]->options[0]->label = false;
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testInvalidChoiceCheckboxOptionSelected()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_checkbox',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                        'options' => [
-                            (object)[
-                                'name' => 'op6',
-                                'label' => 'First choice',
-                                'selected' => 'false',
-                            ],
-                            (object)[
-                                'name' => 'op7',
-                                'label' => 'Second choice',
-                                'selected' => false,
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[1]->elements[3]->options[0]->selected = 'false';
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testNonUniqueElementNames()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'section',
-                        'name' => 'el12345',
-                        'title' => 'Title',
-                        'subtitle' => '<p>How goes it?</p>',
-                    ],
-                    (object)[
-                        'type' => 'section',
-                        'name' => 'el12345',
-                        'title' => 'Title 2',
-                        'subtitle' => '<p>It goes well.</p>',
-                    ],
-                ],
-            ],
-        ];
+        $this->fullConfig[0]->elements[0]->name = 'el12345';
+        $this->fullConfig[0]->elements[1]->name = 'el12345';
 
-        $config = new Config($originalConfig);
+        $config = new Config($this->fullConfig);
     }
 
     public function testNonUniqueOptionNames()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_checkbox',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                        'options' => [
-                            (object)[
-                                'name' => 'op6',
-                                'label' => 'First choice',
-                                'selected' => false,
-                            ],
-                            (object)[
-                                'name' => 'op6',
-                                'label' => 'Second choice',
-                                'selected' => false,
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[1]->elements[3]->options[0]->name = 'op6';
+        $this->fullConfig[1]->elements[3]->options[1]->name = 'op6';
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testNoOptionsForChoiceRadio()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_radio',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                        'other_option' => false,
-                        'options' => [],
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[1]->elements[0]->options = [];
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testNoOptionsForChoiceCheckbox()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_checkbox',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                        'options' => [],
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[1]->elements[3]->options = [];
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testNonObjectOptionForChoiceRadio()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_radio',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                        'other_option' => false,
-                        'options' => [
-                            [
-                                'name' => 'op6',
-                                'label' => 'First choice',
-                                'selected' => false,
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[1]->elements[0]->options[0] = (array)$this->fullConfig[1]->elements[0]->options[0];
+
+        $config = new Config($this->fullConfig);
+    }
+
+    public function testNonObjectOptionForChoiceCheckbox()
+    {
+        $this->setExpectedException('DomainException');
+
+        $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
+
+        $this->fullConfig[1]->elements[3]->options[0] = (array)$this->fullConfig[1]->elements[3]->options[0];
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testMultipleOptionsSelectedForChoiceRadio()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_radio',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                        'other_option' => false,
-                        'options' => [
-                            (object)[
-                                'name' => 'op6',
-                                'label' => 'First choice',
-                                'selected' => true,
-                            ],
-                            (object)[
-                                'name' => 'op7',
-                                'label' => 'Second choice',
-                                'selected' => true,
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[1]->elements[0]->options[0]->selected = true;
+        $this->fullConfig[1]->elements[0]->options[1]->selected = true;
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testMissingOtherOptionValueForChoiceRadio()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_radio',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                        'other_option' => true,
-                        'options' => [
-                            (object)[
-                                'name' => 'op6',
-                                'label' => 'First choice',
-                                'selected' => true,
-                            ],
-                            (object)[
-                                'name' => 'op7',
-                                'label' => 'Second choice',
-                                'selected' => false,
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[1]->type);
 
-        $config = new Config($originalConfig);
+        unset($this->fullConfig[1]->elements[1]->options[2]->value);
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testUnnecessaryOptionValueForChoiceRadio()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_radio',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                        'other_option' => false,
-                        'options' => [
-                            (object)[
-                                'name' => 'op6',
-                                'label' => 'First choice',
-                                'selected' => true,
-                            ],
-                            (object)[
-                                'name' => 'op7',
-                                'label' => 'Second choice',
-                                'selected' => false,
-                                'value' => '',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
+        $this->assertFalse($this->fullConfig[1]->elements[0]->other_option);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[1]->elements[0]->options[1]->value = '';
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testOtherOptionValueOnOtherThanLastOptionForChoiceRadio()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_radio',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                        'other_option' => true,
-                        'options' => [
-                            (object)[
-                                'name' => 'op6',
-                                'label' => 'First choice',
-                                'selected' => true,
-                                'value' => '',
-                            ],
-                            (object)[
-                                'name' => 'op7',
-                                'label' => 'Second choice',
-                                'selected' => false,
-                                'value' => '',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[1]->type);
+        $this->assertTrue($this->fullConfig[1]->elements[1]->other_option);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[1]->elements[1]->options[0]->value = '';
+
+        $config = new Config($this->fullConfig);
     }
 
     public function testOtherOptionValueEmptyIfOtherOptionNotSelectedForChoiceRadio()
     {
         $this->setExpectedException('DomainException');
 
-        $originalConfig = [
-            (object)[
-                'label' => 'Content',
-                'name' => 'tab1',
-                'hidden' => false,
-                'elements' => [
-                    (object)[
-                        'type' => 'choice_radio',
-                        'name' => 'el12345',
-                        'required' => false,
-                        'label' => 'Label',
-                        'microcopy' => 'Microcopy',
-                        'other_option' => true,
-                        'options' => [
-                            (object)[
-                                'name' => 'op6',
-                                'label' => 'First choice',
-                                'selected' => true,
-                            ],
-                            (object)[
-                                'name' => 'op7',
-                                'label' => 'Second choice',
-                                'selected' => false,
-                                'value' => 'this value should be empty',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[1]->type);
+        $this->assertEquals(3, count($this->fullConfig[1]->elements[1]->options));
+        $this->assertTrue($this->fullConfig[1]->elements[1]->other_option);
+        $this->assertFalse($this->fullConfig[1]->elements[1]->options[2]->selected);
 
-        $config = new Config($originalConfig);
+        $this->fullConfig[1]->elements[1]->options[2]->value = 'this value should be empty';
+
+        $config = new Config($this->fullConfig);
     }
 
 }

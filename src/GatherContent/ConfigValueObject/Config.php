@@ -560,7 +560,7 @@ class Config
         }
         else {
             if (count(get_object_vars($option)) != 3) {
-                throw new \DomainException('Element must not have additional attributes');
+                throw new \DomainException('Option must not have additional attributes');
             }
         }
     }
