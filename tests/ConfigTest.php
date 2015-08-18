@@ -254,7 +254,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $json = '[]';
 
-        $config = Config::fromJson($json);
+        Config::fromJson($json);
     }
 
     public function testRandomArray()
@@ -263,7 +263,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $json = '["a","s","d","f"]';
 
-        $config = Config::fromJson($json);
+        Config::fromJson($json);
     }
 
     public function testString()
@@ -272,7 +272,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $string = 'asdf';
 
-        $config = new Config($string);
+        new Config($string);
     }
 
     public function testMissingLabel()
@@ -281,7 +281,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         unset($this->fullConfig[0]->label);
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testMissingName()
@@ -290,7 +290,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         unset($this->fullConfig[0]->name);
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testMissingHidden()
@@ -299,7 +299,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         unset($this->fullConfig[0]->hidden);
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testMissingElements()
@@ -308,7 +308,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         unset($this->fullConfig[0]->elements);
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testAdditionalAttribute()
@@ -317,7 +317,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[0]->this = 'shouldn\'t be here';
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testInvalidLabel()
@@ -326,7 +326,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[0]->label = true;
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testInvalidName()
@@ -335,7 +335,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[0]->name = false;
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testInvalidHidden()
@@ -344,7 +344,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[0]->hidden = 'false';
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testInvalidElements()
@@ -353,7 +353,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[0]->elements = null;
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testEmptyLabel()
@@ -362,7 +362,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[0]->label = '';
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testEmptyName()
@@ -371,7 +371,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[0]->name = '';
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testNonUniqueTabNames()
@@ -381,7 +381,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         $this->fullConfig[0]->name = 'tab1';
         $this->fullConfig[1]->name = 'tab1';
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testRandomElements()
@@ -390,7 +390,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[0]->elements = ['a', 's', 'd', 'f'];
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testMissingElementType()
@@ -399,7 +399,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         unset($this->fullConfig[0]->elements[0]->type);
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testMissingElementName()
@@ -408,7 +408,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         unset($this->fullConfig[0]->elements[0]->name);
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testInvalidElementType()
@@ -417,7 +417,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[0]->elements[0]->type = 'asdf';
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testInvalidElementName()
@@ -426,7 +426,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[0]->elements[0]->name = 12345;
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testMissingTextRequired()
@@ -437,7 +437,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         unset($this->fullConfig[0]->elements[0]->required);
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testMissingTextLabel()
@@ -448,7 +448,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         unset($this->fullConfig[0]->elements[0]->label);
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testMissingTextValue()
@@ -459,7 +459,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         unset($this->fullConfig[0]->elements[0]->value);
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testMissingTextMicrocopy()
@@ -470,7 +470,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         unset($this->fullConfig[0]->elements[0]->microcopy);
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testMissingTextLimitType()
@@ -481,7 +481,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         unset($this->fullConfig[0]->elements[0]->limit_type);
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testMissingTextLimit()
@@ -492,7 +492,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         unset($this->fullConfig[0]->elements[0]->limit);
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testMissingTextPlainText()
@@ -503,7 +503,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         unset($this->fullConfig[0]->elements[0]->plain_text);
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testAdditionalTextAttribute()
@@ -514,7 +514,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[0]->elements[0]->this = 'shouldn\'t be here';
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testInvalidTextRequired()
@@ -525,7 +525,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[0]->elements[0]->required = 'false';
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testInvalidTextLabel()
@@ -536,7 +536,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[0]->elements[0]->label = false;
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testInvalidTextValue()
@@ -547,7 +547,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[0]->elements[0]->value = ['test'];
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testInvalidTextMicrocopy()
@@ -558,7 +558,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[0]->elements[0]->microcopy = false;
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testInvalidTextLimitType()
@@ -569,7 +569,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[0]->elements[0]->limit_type = 'characters';
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testInvalidTextLimit()
@@ -580,7 +580,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[0]->elements[0]->limit = -50;
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testInvalidTextPlainText()
@@ -591,7 +591,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[0]->elements[0]->plain_text = 'false';
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testMissingFilesRequired()
@@ -602,7 +602,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         unset($this->fullConfig[0]->elements[2]->required);
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testMissingFilesLabel()
@@ -613,7 +613,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         unset($this->fullConfig[0]->elements[2]->label);
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testMissingFilesMicrocopy()
@@ -624,7 +624,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         unset($this->fullConfig[0]->elements[2]->microcopy);
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testAdditionalFilesAttribute()
@@ -635,7 +635,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[0]->elements[2]->this = 'shouldn\'t be here';
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testInvalidFilesRequired()
@@ -646,7 +646,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[0]->elements[2]->required = 'false';
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testInvalidFilesLabel()
@@ -657,7 +657,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[0]->elements[2]->label = false;
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testInvalidFilesMicrocopy()
@@ -668,7 +668,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[0]->elements[2]->microcopy = false;
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testMissingSectionTitle()
@@ -679,7 +679,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         unset($this->fullConfig[0]->elements[3]->title);
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testMissingSectionSubtitle()
@@ -690,7 +690,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         unset($this->fullConfig[0]->elements[3]->subtitle);
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testAdditionalSectionAttribute()
@@ -701,7 +701,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[0]->elements[3]->this = 'shouldn\'t be here';
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testInvalidSectionTitle()
@@ -712,7 +712,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[0]->elements[3]->title = null;
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testInvalidSectionSubtitle()
@@ -723,7 +723,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[0]->elements[3]->subtitle = null;
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testMissingChoiceRadioRequired()
@@ -734,7 +734,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         unset($this->fullConfig[1]->elements[0]->required);
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testMissingChoiceRadioLabel()
@@ -745,7 +745,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         unset($this->fullConfig[1]->elements[0]->label);
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testMissingChoiceRadioMicrocopy()
@@ -756,7 +756,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         unset($this->fullConfig[1]->elements[0]->microcopy);
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testMissingChoiceRadioOtherOption()
@@ -767,7 +767,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         unset($this->fullConfig[1]->elements[0]->other_option);
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testMissingChoiceRadioOptions()
@@ -778,7 +778,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         unset($this->fullConfig[1]->elements[0]->options);
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testMissingChoiceRadioOptionName()
@@ -789,7 +789,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         unset($this->fullConfig[1]->elements[0]->options[0]->name);
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testMissingChoiceRadioOptionLabel()
@@ -800,7 +800,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         unset($this->fullConfig[1]->elements[0]->options[0]->label);
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testMissingChoiceRadioOptionSelected()
@@ -811,7 +811,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         unset($this->fullConfig[1]->elements[0]->options[0]->selected);
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testAdditionalChoiceRadioAttribute()
@@ -822,7 +822,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[1]->elements[0]->this = 'shouldn\'t be here';
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testAdditionalChoiceRadioOptionAttribute()
@@ -833,7 +833,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[1]->elements[0]->options[0]->this = 'shouldn\'t be here';
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testAdditionalChoiceRadioOtherOptionAttribute()
@@ -845,7 +845,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[1]->elements[1]->options[2]->this = 'shouldn\'t be here';
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testInvalidChoiceRadioRequired()
@@ -856,7 +856,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[1]->elements[0]->required = 'false';
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testInvalidChoiceRadioLabel()
@@ -867,7 +867,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[1]->elements[0]->label = false;
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testInvalidChoiceRadioMicrocopy()
@@ -878,7 +878,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[1]->elements[0]->microcopy = false;
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testInvalidChoiceRadioOtherOption()
@@ -889,7 +889,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[1]->elements[0]->other_option = 'false';
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testInvalidChoiceRadioOptions()
@@ -900,7 +900,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[1]->elements[0]->options = 'none';
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testInvalidChoiceRadioOptionName()
@@ -911,7 +911,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[1]->elements[0]->options[0]->name = 1;
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testInvalidChoiceRadioOptionLabel()
@@ -922,7 +922,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[1]->elements[0]->options[0]->label = false;
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testInvalidChoiceRadioOptionSelected()
@@ -933,7 +933,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[1]->elements[0]->options[0]->selected = 'false';
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testInvalidChoiceRadioOptionValues()
@@ -945,7 +945,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[1]->elements[1]->options[2]->value = false;
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testMissingChoiceCheckboxRequired()
@@ -956,7 +956,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         unset($this->fullConfig[1]->elements[3]->required);
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testMissingChoiceCheckboxLabel()
@@ -967,7 +967,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         unset($this->fullConfig[1]->elements[3]->label);
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testMissingChoiceCheckboxMicrocopy()
@@ -978,7 +978,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         unset($this->fullConfig[1]->elements[3]->microcopy);
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testMissingChoiceCheckboxOptions()
@@ -989,7 +989,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         unset($this->fullConfig[1]->elements[3]->options);
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testMissingChoiceCheckboxOptionName()
@@ -1000,7 +1000,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         unset($this->fullConfig[1]->elements[3]->options[0]->name);
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testMissingChoiceCheckboxOptionLabel()
@@ -1011,7 +1011,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         unset($this->fullConfig[1]->elements[3]->options[0]->label);
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testMissingChoiceCheckboxOptionSelected()
@@ -1022,7 +1022,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         unset($this->fullConfig[1]->elements[3]->options[0]->selected);
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testAdditionalChoiceCheckboxAttribute()
@@ -1033,7 +1033,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[1]->elements[3]->this = 'shouldn\'t be here';
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testAdditionalChoiceCheckboxOptionAttribute()
@@ -1044,7 +1044,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[1]->elements[3]->options[0]->this = 'shouldn\'t be here';
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testInvalidChoiceCheckboxRequired()
@@ -1055,7 +1055,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[1]->elements[3]->required = 'false';
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testInvalidChoiceCheckboxLabel()
@@ -1066,7 +1066,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[1]->elements[3]->label = false;
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testInvalidChoiceCheckboxMicrocopy()
@@ -1077,7 +1077,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[1]->elements[3]->microcopy = false;
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testInvalidChoiceCheckboxOptions()
@@ -1088,7 +1088,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[1]->elements[3]->options = 'asdf';
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testInvalidChoiceCheckboxOptionName()
@@ -1099,7 +1099,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[1]->elements[3]->options[0]->name = 6;
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testInvalidChoiceCheckboxOptionLabel()
@@ -1110,7 +1110,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[1]->elements[3]->options[0]->label = false;
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testInvalidChoiceCheckboxOptionSelected()
@@ -1121,7 +1121,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[1]->elements[3]->options[0]->selected = 'false';
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testNonUniqueElementNames()
@@ -1131,7 +1131,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         $this->fullConfig[0]->elements[0]->name = 'el12345';
         $this->fullConfig[0]->elements[1]->name = 'el12345';
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testNonUniqueOptionNames()
@@ -1143,7 +1143,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         $this->fullConfig[1]->elements[3]->options[0]->name = 'op6';
         $this->fullConfig[1]->elements[3]->options[1]->name = 'op6';
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testNoOptionsForChoiceRadio()
@@ -1154,7 +1154,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[1]->elements[0]->options = [];
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testNoOptionsForChoiceCheckbox()
@@ -1165,7 +1165,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[1]->elements[3]->options = [];
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testNonObjectOptionForChoiceRadio()
@@ -1176,7 +1176,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[1]->elements[0]->options[0] = (array)$this->fullConfig[1]->elements[0]->options[0];
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testNonObjectOptionForChoiceCheckbox()
@@ -1187,7 +1187,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[1]->elements[3]->options[0] = (array)$this->fullConfig[1]->elements[3]->options[0];
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testMultipleOptionsSelectedForChoiceRadio()
@@ -1199,7 +1199,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         $this->fullConfig[1]->elements[0]->options[0]->selected = true;
         $this->fullConfig[1]->elements[0]->options[1]->selected = true;
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testMissingOtherOptionValueForChoiceRadio()
@@ -1210,7 +1210,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         unset($this->fullConfig[1]->elements[1]->options[2]->value);
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testUnnecessaryOptionValueForChoiceRadio()
@@ -1222,7 +1222,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[1]->elements[0]->options[1]->value = '';
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testOtherOptionValueOnOtherThanLastOptionForChoiceRadio()
@@ -1234,7 +1234,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[1]->elements[1]->options[0]->value = '';
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
     public function testOtherOptionValueEmptyIfOtherOptionNotSelectedForChoiceRadio()
@@ -1248,7 +1248,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[1]->elements[1]->options[2]->value = 'this value should be empty';
 
-        $config = new Config($this->fullConfig);
+        new Config($this->fullConfig);
     }
 
 }
