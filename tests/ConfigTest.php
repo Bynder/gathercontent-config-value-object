@@ -238,6 +238,31 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($result);
     }
 
+    public function testEqualsIsCaseSensitive()
+    {
+        $config1 = new Config([
+            (object) [
+                'label' => 'Content',
+                'name' => 'tab',
+                'hidden' => false,
+                'elements' => [],
+            ]
+        ]);
+
+        $config2 = new Config([
+            (object) [
+                'label' => 'content',
+                'name' => 'tab',
+                'hidden' => false,
+                'elements' => [],
+            ]
+        ]);
+
+        $result = $config1->equals($config2);
+
+        $this->assertFalse($result);
+    }
+
     public function testCreatingFromJson()
     {
         $expected = $json = '[{"label":"Content","name":"tab1","hidden":false,"elements":[]}]';

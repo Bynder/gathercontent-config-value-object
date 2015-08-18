@@ -32,7 +32,7 @@ final class Config
 
     public function equals(Config $config)
     {
-        return strtolower((string) $this) === strtolower((string) $config);
+        return (string) $this === (string) $config;
     }
 
     private function validate($config)
