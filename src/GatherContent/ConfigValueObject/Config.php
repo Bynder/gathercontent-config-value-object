@@ -35,7 +35,7 @@ class Config
         return strtolower((string) $this) === strtolower((string) $config);
     }
 
-    protected function validate($config)
+    private function validate($config)
     {
         $this->validateConfigNotEmpty($config);
         $this->validateTabFormat($config);
@@ -45,7 +45,7 @@ class Config
         $this->validateUniqueOptionNames($config);
     }
 
-    protected function validateConfigNotEmpty($config)
+    private function validateConfigNotEmpty($config)
     {
         if (!is_array($config)) {
             throw new \DomainException('Config must be array');
@@ -56,7 +56,7 @@ class Config
         }
     }
 
-    protected function validateTabFormat($config)
+    private function validateTabFormat($config)
     {
         foreach ($config as $tab) {
 
@@ -110,7 +110,7 @@ class Config
         }
     }
 
-    protected function validateUniqueTabNames($config)
+    private function validateUniqueTabNames($config)
     {
         $names = [];
 
@@ -124,7 +124,7 @@ class Config
         }
     }
 
-    protected function validateElementFormat($config)
+    private function validateElementFormat($config)
     {
         foreach ($config as $tab) {
 
@@ -196,7 +196,7 @@ class Config
         }
     }
 
-    protected function validateTextElement($element)
+    private function validateTextElement($element)
     {
         if (!isset($element->required)) {
             throw new \DomainException('Element required attribute is required');
@@ -267,7 +267,7 @@ class Config
         }
     }
 
-    protected function validateFilesElement($element)
+    private function validateFilesElement($element)
     {
         if (!isset($element->required)) {
             throw new \DomainException('Element required attribute is required');
@@ -298,7 +298,7 @@ class Config
         }
     }
 
-    protected function validateSectionElement($element)
+    private function validateSectionElement($element)
     {
         if (!isset($element->title)) {
             throw new \DomainException('Element title attribute is required');
@@ -321,7 +321,7 @@ class Config
         }
     }
 
-    protected function validateChoiceRadioElement($element)
+    private function validateChoiceRadioElement($element)
     {
         if (!isset($element->required)) {
             throw new \DomainException('Element required attribute is required');
@@ -376,7 +376,7 @@ class Config
         }
     }
 
-    protected function validateMaxOneOptionSelectedForChoiceRadioElement($element)
+    private function validateMaxOneOptionSelectedForChoiceRadioElement($element)
     {
         $selectedCounter = 0;
 
@@ -395,7 +395,7 @@ class Config
         }
     }
 
-    protected function validateOtherOptionValuePresentForChoiceRadioElement($element)
+    private function validateOtherOptionValuePresentForChoiceRadioElement($element)
     {
         if ($element->other_option) {
 
@@ -407,7 +407,7 @@ class Config
         }
     }
 
-    protected function validateRegularOptionValueNotPresentForChoiceRadioElement($element)
+    private function validateRegularOptionValueNotPresentForChoiceRadioElement($element)
     {
         if (!$element->other_option) {
 
@@ -419,7 +419,7 @@ class Config
         }
     }
 
-    protected function validateOtherOptionValuePresentOnlyOnTheLastOptionForChoiceRadioElement($element)
+    private function validateOtherOptionValuePresentOnlyOnTheLastOptionForChoiceRadioElement($element)
     {
         $options = array_slice($element->options, 0, -1);
 
@@ -435,7 +435,7 @@ class Config
         }
     }
 
-    protected function validateOtherOptionValueEmptyIfOtherOptionNotSelected($element)
+    private function validateOtherOptionValueEmptyIfOtherOptionNotSelected($element)
     {
         if ($element->other_option) {
 
@@ -447,7 +447,7 @@ class Config
         }
     }
 
-    protected function validateChoiceCheckboxElement($element)
+    private function validateChoiceCheckboxElement($element)
     {
         if (!isset($element->required)) {
             throw new \DomainException('Element required attribute is required');
@@ -494,7 +494,7 @@ class Config
         }
     }
 
-    protected function validateUniqueElementNames($config)
+    private function validateUniqueElementNames($config)
     {
         $names = [];
 
@@ -514,7 +514,7 @@ class Config
         }
     }
 
-    protected function validateOptionFormat($option)
+    private function validateOptionFormat($option)
     {
         if (!is_object($option)) {
             throw new \DomainException('Option must be an object');
@@ -565,7 +565,7 @@ class Config
         }
     }
 
-    protected function validateUniqueOptionNames($config)
+    private function validateUniqueOptionNames($config)
     {
         $names = [];
 
