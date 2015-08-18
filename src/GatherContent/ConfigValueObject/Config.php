@@ -2,7 +2,7 @@
 
 namespace GatherContent\ConfigValueObject;
 
-class Config
+final class Config
 {
     private $config;
 
