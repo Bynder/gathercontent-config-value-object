@@ -276,7 +276,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testEmptyConfig()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Config must not be empty');
 
         $json = '[]';
 
@@ -285,7 +285,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testRandomArray()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Tab must be an object');
 
         $json = '["a","s","d","f"]';
 
@@ -294,7 +294,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testString()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Config must be array');
 
         $string = 'asdf';
 
@@ -303,7 +303,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingLabel()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Tab label attribute is required');
 
         unset($this->fullConfig[0]->label);
 
@@ -312,7 +312,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingName()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Tab name attribute is required');
 
         unset($this->fullConfig[0]->name);
 
@@ -321,7 +321,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingHidden()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Tab hidden attribute is required');
 
         unset($this->fullConfig[0]->hidden);
 
@@ -330,7 +330,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingElements()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Tab elements attribute is required');
 
         unset($this->fullConfig[0]->elements);
 
@@ -339,7 +339,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testAdditionalAttribute()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Tab must not have additional attributes');
 
         $this->fullConfig[0]->this = 'shouldn\'t be here';
 
@@ -348,7 +348,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidLabel()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Tab label attribute must be string');
 
         $this->fullConfig[0]->label = true;
 
@@ -357,7 +357,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidName()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Tab name attribute must be string');
 
         $this->fullConfig[0]->name = false;
 
@@ -366,7 +366,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidHidden()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Tab hidden attribute must be boolean');
 
         $this->fullConfig[0]->hidden = 'false';
 
@@ -375,7 +375,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidElements()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Tab elements attribute must be array');
 
         $this->fullConfig[0]->elements = 'none';
 
@@ -384,7 +384,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testEmptyLabel()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Tab label attribute must not be empty');
 
         $this->fullConfig[0]->label = '';
 
@@ -393,7 +393,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testEmptyName()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Tab name attribute must not be empty');
 
         $this->fullConfig[0]->name = '';
 
@@ -402,7 +402,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testNonUniqueTabNames()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Tab names must be unique');
 
         $this->fullConfig[0]->name = 'tab1';
         $this->fullConfig[1]->name = 'tab1';
@@ -412,7 +412,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testRandomElements()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element must be an object');
 
         $this->fullConfig[0]->elements = ['a', 's', 'd', 'f'];
 
@@ -421,7 +421,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingElementType()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element type attribute is required');
 
         unset($this->fullConfig[0]->elements[0]->type);
 
@@ -430,7 +430,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingElementName()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element name attribute is required');
 
         unset($this->fullConfig[0]->elements[0]->name);
 
@@ -439,7 +439,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidElementType1()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element type attribute must be string');
 
         $this->fullConfig[0]->elements[0]->type = true;
 
@@ -448,7 +448,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidElementType2()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element must be of a supported type');
 
         $this->fullConfig[0]->elements[0]->type = 'asdf';
 
@@ -457,7 +457,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidElementName()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element name attribute must be string');
 
         $this->fullConfig[0]->elements[0]->name = 12345;
 
@@ -466,7 +466,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testEmptyElementName()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element name attribute must not be empty');
 
         $this->fullConfig[0]->elements[0]->name = '';
 
@@ -475,7 +475,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingTextRequired()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element required attribute is required');
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
@@ -486,7 +486,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingTextLabel()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element label attribute is required');
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
@@ -497,7 +497,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingTextValue()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element value attribute is required');
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
@@ -508,7 +508,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingTextMicrocopy()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element microcopy attribute is required');
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
@@ -519,7 +519,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingTextLimitType()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element limit_type attribute is required');
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
@@ -530,7 +530,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingTextLimit()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element limit attribute is required');
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
@@ -541,7 +541,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingTextPlainText()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element plain_text attribute is required');
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
@@ -552,7 +552,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testAdditionalTextAttribute()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element must not have additional attributes');
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
@@ -563,7 +563,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidTextRequired()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element required attribute must be boolean');
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
@@ -574,7 +574,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidTextLabel()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element label attribute must be string');
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
@@ -585,7 +585,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidTextValue()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element value attribute must be string');
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
@@ -596,7 +596,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidTextMicrocopy()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element microcopy attribute must be string');
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
@@ -607,7 +607,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidTextLimitType()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element must be of a supported type');
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
@@ -618,7 +618,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidTextLimit1()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element limit attribute must be integer');
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
@@ -629,7 +629,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidTextLimit2()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element limit attribute must not be negative');
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
@@ -640,7 +640,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidTextPlainText()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element plain_text attribute must be boolean');
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
@@ -651,7 +651,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingFilesRequired()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element required attribute is required');
 
         $this->assertEquals('files', $this->fullConfig[0]->elements[2]->type);
 
@@ -662,7 +662,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingFilesLabel()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element label attribute is required');
 
         $this->assertEquals('files', $this->fullConfig[0]->elements[2]->type);
 
@@ -673,7 +673,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingFilesMicrocopy()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element microcopy attribute is required');
 
         $this->assertEquals('files', $this->fullConfig[0]->elements[2]->type);
 
@@ -684,7 +684,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testAdditionalFilesAttribute()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element must not have additional attributes');
 
         $this->assertEquals('files', $this->fullConfig[0]->elements[2]->type);
 
@@ -695,7 +695,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidFilesRequired()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element required attribute must be boolean');
 
         $this->assertEquals('files', $this->fullConfig[0]->elements[2]->type);
 
@@ -706,7 +706,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidFilesLabel()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element label attribute must be string');
 
         $this->assertEquals('files', $this->fullConfig[0]->elements[2]->type);
 
@@ -717,7 +717,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidFilesMicrocopy()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element microcopy attribute must be string');
 
         $this->assertEquals('files', $this->fullConfig[0]->elements[2]->type);
 
@@ -728,7 +728,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingSectionTitle()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element title attribute is required');
 
         $this->assertEquals('section', $this->fullConfig[0]->elements[3]->type);
 
@@ -739,7 +739,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingSectionSubtitle()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element subtitle attribute is required');
 
         $this->assertEquals('section', $this->fullConfig[0]->elements[3]->type);
 
@@ -750,7 +750,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testAdditionalSectionAttribute()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element must not have additional attributes');
 
         $this->assertEquals('section', $this->fullConfig[0]->elements[3]->type);
 
@@ -761,7 +761,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidSectionTitle()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element title attribute must be string');
 
         $this->assertEquals('section', $this->fullConfig[0]->elements[3]->type);
 
@@ -772,7 +772,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidSectionSubtitle()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element subtitle attribute must be string');
 
         $this->assertEquals('section', $this->fullConfig[0]->elements[3]->type);
 
@@ -783,7 +783,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingChoiceRadioRequired()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element required attribute is required');
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -794,7 +794,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingChoiceRadioLabel()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element label attribute is required');
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -805,7 +805,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingChoiceRadioMicrocopy()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element microcopy attribute is required');
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -816,7 +816,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingChoiceRadioOtherOption()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element other_option attribute is required');
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -827,7 +827,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingChoiceRadioOptions()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element options attribute is required');
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -838,7 +838,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingChoiceRadioOptionName()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Option name attribute is required');
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -849,7 +849,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingChoiceRadioOptionLabel()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Option label attribute is required');
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -860,7 +860,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingChoiceRadioOptionSelected()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Option selected attribute is required');
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -871,7 +871,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testAdditionalChoiceRadioAttribute()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element must not have additional attributes');
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -882,7 +882,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testAdditionalChoiceRadioOptionAttribute()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Option value attribute is required');
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -893,7 +893,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testAdditionalChoiceRadioOtherOptionAttribute()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Option must not have additional attributes');
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[1]->type);
         $this->assertTrue($this->fullConfig[1]->elements[1]->other_option);
@@ -905,7 +905,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidChoiceRadioRequired()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element required attribute must be boolean');
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -916,7 +916,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidChoiceRadioLabel()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element label attribute must be string');
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -927,7 +927,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidChoiceRadioMicrocopy()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element microcopy attribute must be string');
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -938,7 +938,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidChoiceRadioOtherOption()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element other_option attribute must be boolean');
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -949,7 +949,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidChoiceRadioOptions()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element options attribute must be array');
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -960,7 +960,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidChoiceRadioOptionName()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Option name attribute must be string');
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -971,7 +971,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidChoiceRadioOptionLabel()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Option label attribute must be string');
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -982,7 +982,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidChoiceRadioOptionSelected()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Option selected attribute must be boolean');
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -993,7 +993,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidChoiceRadioOptionValues()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Option value attribute must be string');
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[1]->type);
         $this->assertTrue($this->fullConfig[1]->elements[1]->other_option);
@@ -1005,7 +1005,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingChoiceCheckboxRequired()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element required attribute is required');
 
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
@@ -1016,7 +1016,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingChoiceCheckboxLabel()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element label attribute is required');
 
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
@@ -1027,7 +1027,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingChoiceCheckboxMicrocopy()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element microcopy attribute is required');
 
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
@@ -1038,7 +1038,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingChoiceCheckboxOptions()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element options attribute is required');
 
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
@@ -1049,7 +1049,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingChoiceCheckboxOptionName()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Option name attribute is required');
 
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
@@ -1060,7 +1060,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingChoiceCheckboxOptionLabel()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Option label attribute is required');
 
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
@@ -1071,7 +1071,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingChoiceCheckboxOptionSelected()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Option selected attribute is required');
 
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
@@ -1082,7 +1082,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testAdditionalChoiceCheckboxAttribute()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element must not have additional attributes');
 
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
@@ -1093,7 +1093,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testAdditionalChoiceCheckboxOptionAttribute()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Option value attribute is required');
 
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
@@ -1104,7 +1104,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidChoiceCheckboxRequired()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element required attribute must be boolean');
 
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
@@ -1115,7 +1115,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidChoiceCheckboxLabel()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element label attribute must be string');
 
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
@@ -1126,7 +1126,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidChoiceCheckboxMicrocopy()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element microcopy attribute must be string');
 
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
@@ -1137,7 +1137,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidChoiceCheckboxOptions()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element options attribute must be array');
 
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
@@ -1148,7 +1148,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidChoiceCheckboxOptionName()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Option name attribute must be string');
 
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
@@ -1159,7 +1159,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidChoiceCheckboxOptionLabel()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Option label attribute must be string');
 
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
@@ -1170,7 +1170,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidChoiceCheckboxOptionSelected()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Option selected attribute must be boolean');
 
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
@@ -1181,7 +1181,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testNonUniqueElementNames()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element names must be unique');
 
         $this->fullConfig[0]->elements[0]->name = 'el12345';
         $this->fullConfig[0]->elements[1]->name = 'el12345';
@@ -1191,7 +1191,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testNonUniqueOptionNames()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Option names must be unique');
 
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
@@ -1203,7 +1203,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testNoOptionsForChoiceRadio()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element must have at least one option');
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -1214,7 +1214,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testNoOptionsForChoiceCheckbox()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element must have at least one option');
 
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
@@ -1225,7 +1225,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testNonObjectOptionForChoiceRadio()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Option must be an object');
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -1236,7 +1236,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testNonObjectOptionForChoiceCheckbox()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Option must be an object');
 
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
@@ -1247,7 +1247,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMultipleOptionsSelectedForChoiceRadio()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Element checkbox_radio must have at most one option selected');
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -1259,7 +1259,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingOtherOptionValueForChoiceRadio()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Other option value is required');
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[1]->type);
 
@@ -1270,7 +1270,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testUnnecessaryOptionValueForChoiceRadio()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Option value must not be present for regular option');
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
         $this->assertFalse($this->fullConfig[1]->elements[0]->other_option);
@@ -1282,7 +1282,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testOtherOptionValueOnOtherThanLastOptionForChoiceRadio()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Option value must not be present for regular option');
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[1]->type);
         $this->assertTrue($this->fullConfig[1]->elements[1]->other_option);
@@ -1294,7 +1294,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testOtherOptionValueEmptyIfOtherOptionNotSelectedForChoiceRadio()
     {
-        $this->setExpectedException(ConfigValueException::class);
+        $this->setExpectedException(ConfigValueException::class, 'Other option value must be empty when other option not selected');
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[1]->type);
         $this->assertEquals(3, count($this->fullConfig[1]->elements[1]->options));
