@@ -16,66 +16,26 @@ final class Validator
 
     private function validateConfigNotEmpty($config)
     {
-        if (!is_array($config)) {
-            throw new \DomainException('Config must be array');
-        }
-
-        if (count($config) == 0) {
-            throw new \DomainException('Config must not be empty');
-        }
+        Assertion::isArray($config, 'Config must be array');
+        Assertion::notEmpty($config, 'Config must not be empty');
     }
 
     private function validateTabFormat($config)
     {
         foreach ($config as $tab) {
 
-            if (!is_object($tab)) {
-                throw new \DomainException('Tab must be an object');
-            }
-
-            if (!isset($tab->label)) {
-                throw new \DomainException('Tab label attribute is required');
-            }
-
-            if (!isset($tab->name)) {
-                throw new \DomainException('Tab name attribute is required');
-            }
-
-            if (!isset($tab->hidden)) {
-                throw new \DomainException('Tab hidden attribute is required');
-            }
-
-            if (!isset($tab->elements)) {
-                throw new \DomainException('Tab elements attribute is required');
-            }
-
-            if (count(get_object_vars($tab)) != 4) {
-                throw new \DomainException('Tab must not have additional attributes');
-            }
-
-            if (!is_string($tab->label)) {
-                throw new \DomainException('Tab label attribute must be string');
-            }
-
-            if (!is_string($tab->name)) {
-                throw new \DomainException('Tab name attribute must be string');
-            }
-
-            if (!is_bool($tab->hidden)) {
-                throw new \DomainException('Tab hidden attribute must be boolean');
-            }
-
-            if (!is_array($tab->elements)) {
-                throw new \DomainException('Tab elements attribute must be array');
-            }
-
-            if ($tab->label == '') {
-                throw new \DomainException('Tab label attribute must not be empty');
-            }
-
-            if ($tab->name == '') {
-                throw new \DomainException('Tab name attribute must not be empty');
-            }
+            Assertion::isObject($tab, 'Tab must be an object');
+            Assertion::keyExists(get_object_vars($tab), 'label', 'Tab label attribute is required');
+            Assertion::keyExists(get_object_vars($tab), 'name', 'Tab name attribute is required');
+            Assertion::keyExists(get_object_vars($tab), 'hidden', 'Tab hidden attribute is required');
+            Assertion::keyExists(get_object_vars($tab), 'elements', 'Tab elements attribute is required');
+            Assertion::eq(count(get_object_vars($tab)), 4, 'Tab must not have additional attributes');
+            Assertion::string($tab->label, 'Tab label attribute must be string');
+            Assertion::string($tab->name, 'Tab name attribute must be string');
+            Assertion::boolean($tab->hidden, 'Tab hidden attribute must be boolean');
+            Assertion::isArray($tab->elements, 'Tab elements attribute must be array');
+            Assertion::notEmpty($tab->label, 'Tab label attribute must not be empty');
+            Assertion::notEmpty($tab->name, 'Tab name attribute must not be empty');
         }
     }
 
@@ -86,7 +46,7 @@ final class Validator
         foreach ($config as $tab) {
 
             if (in_array($tab->name, $names)) {
-                throw new \DomainException('Tab names must be unique');
+                throw new ConfigValueException('Tab names must be unique');
             }
 
             $names[] = $tab->name;
@@ -101,33 +61,13 @@ final class Validator
 
                 foreach ($tab->elements as $element) {
 
-                    if (!is_object($element)) {
-                        throw new \DomainException('Element must be an object');
-                    }
-
-                    if (!isset($element->type)) {
-                        throw new \DomainException('Element type attribute is required');
-                    }
-
-                    if (!isset($element->name)) {
-                        throw new \DomainException('Element name attribute is required');
-                    }
-
-                    if (!is_string($element->type)) {
-                        throw new \DomainException('Element type attribute must be string');
-                    }
-
-                    if (!is_string($element->name)) {
-                        throw new \DomainException('Element name attribute must be string');
-                    }
-
-                    if (!in_array($element->type, ['text', 'files', 'section', 'choice_radio', 'choice_checkbox'])) {
-                        throw new \DomainException('Element must be of a supported type');
-                    }
-
-                    if ($element->name == '') {
-                        throw new \DomainException('Element name attribute must not be empty');
-                    }
+                    Assertion::isObject($element, 'Element must be an object');
+                    Assertion::keyExists(get_object_vars($element), 'type', 'Element type attribute is required');
+                    Assertion::keyExists(get_object_vars($element), 'name', 'Element name attribute is required');
+                    Assertion::string($element->type, 'Element type attribute must be string');
+                    Assertion::string($element->name, 'Element name attribute must be string');
+                    Assertion::inArray($element->type, ['text', 'files', 'section', 'choice_radio', 'choice_checkbox'], 'Element must be of a supported type');
+                    Assertion::notEmpty($element->name, 'Element name attribute must not be empty');
 
                     switch ($element->type) {
 
@@ -155,10 +95,6 @@ final class Validator
                         case 'choice_checkbox':
                             $this->validateChoiceCheckboxElement($element);
                             break;
-
-                        default:
-                            throw new \DomainException('Element must be of a supported type');
-                            break;
                     }
                 }
             }
@@ -167,178 +103,59 @@ final class Validator
 
     private function validateTextElement($element)
     {
-        if (!isset($element->required)) {
-            throw new \DomainException('Element required attribute is required');
-        }
-
-        if (!isset($element->label)) {
-            throw new \DomainException('Element label attribute is required');
-        }
-
-        if (!isset($element->value)) {
-            throw new \DomainException('Element value attribute is required');
-        }
-
-        if (!isset($element->microcopy)) {
-            throw new \DomainException('Element microcopy attribute is required');
-        }
-
-        if (!isset($element->limit_type)) {
-            throw new \DomainException('Element limit_type attribute is required');
-        }
-
-        if (!isset($element->limit)) {
-            throw new \DomainException('Element limit attribute is required');
-        }
-
-        if (!isset($element->plain_text)) {
-            throw new \DomainException('Element plain_text attribute is required');
-        }
-
-        if (count(get_object_vars($element)) != 9) {
-            throw new \DomainException('Element must not have additional attributes');
-        }
-
-        if (!is_bool($element->required)) {
-            throw new \DomainException('Element required attribute must be boolean');
-        }
-
-        if (!is_string($element->label)) {
-            throw new \DomainException('Element label attribute must be string');
-        }
-
-        if (!is_string($element->value)) {
-            throw new \DomainException('Element value attribute must be string');
-        }
-
-        if (!is_string($element->microcopy)) {
-            throw new \DomainException('Element microcopy attribute must be string');
-        }
-
-        if (!is_string($element->limit_type)) {
-            throw new \DomainException('Element limit_type attribute must be string');
-        }
-
-        if (!is_int($element->limit)) {
-            throw new \DomainException('Element limit attribute must be string');
-        }
-
-        if (!is_bool($element->plain_text)) {
-            throw new \DomainException('Element plain_text attribute must be boolean');
-        }
-
-        if (!in_array($element->limit_type, ['words', 'chars'])) {
-            throw new \DomainException('Element limit_type attribute must be either "words" or "chars"');
-        }
-
-        if ($element->limit < 0) {
-            throw new \DomainException('Element limit attribute must not be negative');
-        }
+        Assertion::keyExists(get_object_vars($element), 'required', 'Element required attribute is required');
+        Assertion::keyExists(get_object_vars($element), 'label', 'Element label attribute is required');
+        Assertion::keyExists(get_object_vars($element), 'value', 'Element value attribute is required');
+        Assertion::keyExists(get_object_vars($element), 'microcopy', 'Element microcopy attribute is required');
+        Assertion::keyExists(get_object_vars($element), 'limit_type', 'Element limit_type attribute is required');
+        Assertion::keyExists(get_object_vars($element), 'limit', 'Element limit attribute is required');
+        Assertion::keyExists(get_object_vars($element), 'plain_text', 'Element plain_text attribute is required');
+        Assertion::eq(count(get_object_vars($element)), 9, 'Element must not have additional attributes');
+        Assertion::boolean($element->required, 'Element required attribute must be boolean');
+        Assertion::string($element->label, 'Element label attribute must be string');
+        Assertion::string($element->value, 'Element value attribute must be string');
+        Assertion::string($element->microcopy, 'Element microcopy attribute must be string');
+        Assertion::string($element->limit_type, 'Element limit_type attribute must be string');
+        Assertion::integer($element->limit, 'Element limit attribute must be integer');
+        Assertion::boolean($element->plain_text, 'Element plain_text attribute must be boolean');
+        Assertion::inArray($element->limit_type, ['words', 'chars'], 'Element must be of a supported type');
+        Assertion::min($element->limit, 0, 'Element limit attribute must not be negative');
     }
 
     private function validateFilesElement($element)
     {
-        if (!isset($element->required)) {
-            throw new \DomainException('Element required attribute is required');
-        }
-
-        if (!isset($element->label)) {
-            throw new \DomainException('Element label attribute is required');
-        }
-
-        if (!isset($element->microcopy)) {
-            throw new \DomainException('Element microcopy attribute is required');
-        }
-
-        if (count(get_object_vars($element)) != 5) {
-            throw new \DomainException('Element must not have additional attributes');
-        }
-
-        if (!is_bool($element->required)) {
-            throw new \DomainException('Element required attribute must be boolean');
-        }
-
-        if (!is_string($element->label)) {
-            throw new \DomainException('Element label attribute must be string');
-        }
-
-        if (!is_string($element->microcopy)) {
-            throw new \DomainException('Element microcopy attribute must be string');
-        }
+        Assertion::keyExists(get_object_vars($element), 'required', 'Element required attribute is required');
+        Assertion::keyExists(get_object_vars($element), 'label', 'Element label attribute is required');
+        Assertion::keyExists(get_object_vars($element), 'microcopy', 'Element microcopy attribute is required');
+        Assertion::eq(count(get_object_vars($element)), 5, 'Element must not have additional attributes');
+        Assertion::boolean($element->required, 'Element required attribute must be boolean');
+        Assertion::string($element->label, 'Element label attribute must be string');
+        Assertion::string($element->microcopy, 'Element microcopy attribute must be string');
     }
 
     private function validateSectionElement($element)
     {
-        if (!isset($element->title)) {
-            throw new \DomainException('Element title attribute is required');
-        }
-
-        if (!isset($element->subtitle)) {
-            throw new \DomainException('Element subtitle attribute is required');
-        }
-
-        if (count(get_object_vars($element)) != 4) {
-            throw new \DomainException('Element must not have additional attributes');
-        }
-
-        if (!is_string($element->title)) {
-            throw new \DomainException('Element title attribute must be string');
-        }
-
-        if (!is_string($element->subtitle)) {
-            throw new \DomainException('Element subtitle attribute must be string');
-        }
+        Assertion::keyExists(get_object_vars($element), 'title', 'Element title attribute is required');
+        Assertion::keyExists(get_object_vars($element), 'subtitle', 'Element subtitle attribute is required');
+        Assertion::eq(count(get_object_vars($element)), 4, 'Element must not have additional attributes');
+        Assertion::string($element->title, 'Element title attribute must be string');
+        Assertion::string($element->subtitle, 'Element subtitle attribute must be string');
     }
 
     private function validateChoiceRadioElement($element)
     {
-        if (!isset($element->required)) {
-            throw new \DomainException('Element required attribute is required');
-        }
-
-        if (!isset($element->label)) {
-            throw new \DomainException('Element label attribute is required');
-        }
-
-        if (!isset($element->microcopy)) {
-            throw new \DomainException('Element microcopy attribute is required');
-        }
-
-        if (!isset($element->other_option)) {
-            throw new \DomainException('Element other_option attribute is required');
-        }
-
-        if (!isset($element->options)) {
-            throw new \DomainException('Element options attribute is required');
-        }
-
-        if (count(get_object_vars($element)) != 7) {
-            throw new \DomainException('Element must not have additional attributes');
-        }
-
-        if (!is_bool($element->required)) {
-            throw new \DomainException('Element required attribute must be boolean');
-        }
-
-        if (!is_string($element->label)) {
-            throw new \DomainException('Element label attribute must be string');
-        }
-
-        if (!is_string($element->microcopy)) {
-            throw new \DomainException('Element microcopy attribute must be string');
-        }
-
-        if (!is_bool($element->other_option)) {
-            throw new \DomainException('Element other_option attribute must be boolean');
-        }
-
-        if (!is_array($element->options)) {
-            throw new \DomainException('Element options attribute must be array');
-        }
-
-        if (count($element->options) == 0) {
-            throw new \DomainException('Element must have at least one option');
-        }
+        Assertion::keyExists(get_object_vars($element), 'required', 'Element required attribute is required');
+        Assertion::keyExists(get_object_vars($element), 'label', 'Element label attribute is required');
+        Assertion::keyExists(get_object_vars($element), 'microcopy', 'Element microcopy attribute is required');
+        Assertion::keyExists(get_object_vars($element), 'other_option', 'Element other_option attribute is required');
+        Assertion::keyExists(get_object_vars($element), 'options', 'Element options attribute is required');
+        Assertion::eq(count(get_object_vars($element)), 7, 'Element must not have additional attributes');
+        Assertion::boolean($element->required, 'Element required attribute must be boolean');
+        Assertion::string($element->label, 'Element label attribute must be string');
+        Assertion::string($element->microcopy, 'Element microcopy attribute must be string');
+        Assertion::boolean($element->other_option, 'Element other_option attribute must be boolean');
+        Assertion::isArray($element->options, 'Element options attribute must be array');
+        Assertion::notEmpty($element->options, 'Element must have at least one option');
 
         foreach ($element->options as $option) {
             $this->validateOptionFormat($option);
@@ -359,7 +176,7 @@ final class Validator
             }
 
             if ($selectedCounter > 1) {
-                throw new \DomainException('Element checkbox_radio must have at most one option selected');
+                throw new ConfigValueException('Element checkbox_radio must have at most one option selected');
             }
         }
     }
@@ -371,7 +188,7 @@ final class Validator
             $lastOption = end($element->options);
 
             if (!isset($lastOption->value)) {
-                throw new \DomainException('Other option value is required');
+                throw new ConfigValueException('Other option value is required');
             }
         }
     }
@@ -383,7 +200,7 @@ final class Validator
             $lastOption = end($element->options);
 
             if (isset($lastOption->value)) {
-                throw new \DomainException('Option value must not be present for regular option');
+                throw new ConfigValueException('Option value must not be present for regular option');
             }
         }
     }
@@ -398,7 +215,7 @@ final class Validator
 
                 if (isset($option->value)) {
 
-                    throw new \DomainException('Option value must not be present for regular option');
+                    throw new ConfigValueException('Option value must not be present for regular option');
                 }
             }
         }
@@ -411,52 +228,23 @@ final class Validator
             $lastOption = end($element->options);
 
             if ($lastOption->selected == false && strlen($lastOption->value) > 0) {
-                throw new \DomainException('Other option value must be empty when other option not selected');
+                throw new ConfigValueException('Other option value must be empty when other option not selected');
             }
         }
     }
 
     private function validateChoiceCheckboxElement($element)
     {
-        if (!isset($element->required)) {
-            throw new \DomainException('Element required attribute is required');
-        }
-
-        if (!isset($element->label)) {
-            throw new \DomainException('Element label attribute is required');
-        }
-
-        if (!isset($element->microcopy)) {
-            throw new \DomainException('Element microcopy attribute is required');
-        }
-
-        if (!isset($element->options)) {
-            throw new \DomainException('Element options attribute is required');
-        }
-
-        if (count(get_object_vars($element)) != 6) {
-            throw new \DomainException('Element must not have additional attributes');
-        }
-
-        if (!is_bool($element->required)) {
-            throw new \DomainException('Element required attribute must be boolean');
-        }
-
-        if (!is_string($element->label)) {
-            throw new \DomainException('Element label attribute must be string');
-        }
-
-        if (!is_string($element->microcopy)) {
-            throw new \DomainException('Element microcopy attribute must be string');
-        }
-
-        if (!is_array($element->options)) {
-            throw new \DomainException('Element options attribute must be array');
-        }
-
-        if (count($element->options) == 0) {
-            throw new \DomainException('Element must have at least one option');
-        }
+        Assertion::keyExists(get_object_vars($element), 'required', 'Element required attribute is required');
+        Assertion::keyExists(get_object_vars($element), 'label', 'Element label attribute is required');
+        Assertion::keyExists(get_object_vars($element), 'microcopy', 'Element microcopy attribute is required');
+        Assertion::keyExists(get_object_vars($element), 'options', 'Element options attribute is required');
+        Assertion::eq(count(get_object_vars($element)), 6, 'Element must not have additional attributes');
+        Assertion::boolean($element->required, 'Element required attribute must be boolean');
+        Assertion::string($element->label, 'Element label attribute must be string');
+        Assertion::string($element->microcopy, 'Element microcopy attribute must be string');
+        Assertion::isArray($element->options, 'Element options attribute must be array');
+        Assertion::notEmpty($element->options, 'Element must have at least one option');
 
         foreach ($element->options as $option) {
             $this->validateOptionFormat($option);
@@ -474,7 +262,7 @@ final class Validator
                 foreach ($tab->elements as $element) {
 
                     if (in_array($element->name, $names)) {
-                        throw new \DomainException('Element names must be unique');
+                        throw new ConfigValueException('Element names must be unique');
                     }
 
                     $names[] = $element->name;
@@ -485,52 +273,23 @@ final class Validator
 
     private function validateOptionFormat($option)
     {
-        if (!is_object($option)) {
-            throw new \DomainException('Option must be an object');
-        }
-
-        if (!isset($option->name)) {
-            throw new \DomainException('Option name attribute is required');
-        }
-
-        if (!isset($option->label)) {
-            throw new \DomainException('Option label attribute is required');
-        }
-
-        if (!isset($option->selected)) {
-            throw new \DomainException('Option selected attribute is required');
-        }
-
-        if (!is_string($option->name)) {
-            throw new \DomainException('Option name attribute must be string');
-        }
-
-        if (!is_string($option->label)) {
-            throw new \DomainException('Option label attribute must be string');
-        }
-
-        if (!is_bool($option->selected)) {
-            throw new \DomainException('Option selected attribute must be boolean');
-        }
-
-        if ($option->name == '') {
-            throw new \DomainException('Option name attribute must not be empty');
-        }
+        Assertion::isObject($option, 'Option must be an object');
+        Assertion::keyExists(get_object_vars($option), 'name', 'Option name attribute is required');
+        Assertion::keyExists(get_object_vars($option), 'label', 'Option label attribute is required');
+        Assertion::keyExists(get_object_vars($option), 'selected', 'Option selected attribute is required');
+        Assertion::string($option->name, 'Option name attribute must be string');
+        Assertion::string($option->label, 'Option label attribute must be string');
+        Assertion::boolean($option->selected, 'Option selected attribute must be boolean');
+        Assertion::notEmpty($option->name, 'Option name attribute must not be empty');
 
         if (count(get_object_vars($option)) == 4) {
 
-            if (!isset($option->value)) {
-                throw new \DomainException('Option value attribute is required');
-            }
-
-            if (!is_string($option->value)) {
-                throw new \DomainException('Option value attribute must be string');
-            }
+            Assertion::keyExists(get_object_vars($option), 'value', 'Option value attribute is required');
+            Assertion::string($option->value, 'Option value attribute must be string');
         }
         else {
-            if (count(get_object_vars($option)) != 3) {
-                throw new \DomainException('Option must not have additional attributes');
-            }
+
+            Assertion::eq(count(get_object_vars($option)), 3, 'Option must not have additional attributes');
         }
     }
 
@@ -549,7 +308,7 @@ final class Validator
                         foreach ($element->options as $option) {
 
                             if (in_array($option->name, $names)) {
-                                throw new \DomainException('Option names must be unique');
+                                throw new ConfigValueException('Option names must be unique');
                             }
 
                             $names[] = $option->name;

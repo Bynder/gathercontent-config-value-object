@@ -1,6 +1,7 @@
 <?php
 
 use GatherContent\ConfigValueObject\Config;
+use GatherContent\ConfigValueObject\ConfigValueException;
 
 class ConfigTest extends PHPUnit_Framework_TestCase
 {
@@ -275,7 +276,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testEmptyConfig()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $json = '[]';
 
@@ -284,7 +285,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testRandomArray()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $json = '["a","s","d","f"]';
 
@@ -293,7 +294,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testString()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $string = 'asdf';
 
@@ -302,7 +303,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingLabel()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         unset($this->fullConfig[0]->label);
 
@@ -311,7 +312,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingName()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         unset($this->fullConfig[0]->name);
 
@@ -320,7 +321,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingHidden()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         unset($this->fullConfig[0]->hidden);
 
@@ -329,7 +330,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingElements()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         unset($this->fullConfig[0]->elements);
 
@@ -338,7 +339,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testAdditionalAttribute()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->fullConfig[0]->this = 'shouldn\'t be here';
 
@@ -347,7 +348,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidLabel()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->fullConfig[0]->label = true;
 
@@ -356,7 +357,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidName()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->fullConfig[0]->name = false;
 
@@ -365,7 +366,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidHidden()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->fullConfig[0]->hidden = 'false';
 
@@ -374,16 +375,16 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidElements()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
-        $this->fullConfig[0]->elements = null;
+        $this->fullConfig[0]->elements = 'none';
 
         new Config($this->fullConfig);
     }
 
     public function testEmptyLabel()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->fullConfig[0]->label = '';
 
@@ -392,7 +393,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testEmptyName()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->fullConfig[0]->name = '';
 
@@ -401,7 +402,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testNonUniqueTabNames()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->fullConfig[0]->name = 'tab1';
         $this->fullConfig[1]->name = 'tab1';
@@ -411,7 +412,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testRandomElements()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->fullConfig[0]->elements = ['a', 's', 'd', 'f'];
 
@@ -420,7 +421,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingElementType()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         unset($this->fullConfig[0]->elements[0]->type);
 
@@ -429,16 +430,25 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingElementName()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         unset($this->fullConfig[0]->elements[0]->name);
 
         new Config($this->fullConfig);
     }
 
-    public function testInvalidElementType()
+    public function testInvalidElementType1()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
+
+        $this->fullConfig[0]->elements[0]->type = true;
+
+        new Config($this->fullConfig);
+    }
+
+    public function testInvalidElementType2()
+    {
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->fullConfig[0]->elements[0]->type = 'asdf';
 
@@ -447,16 +457,25 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidElementName()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->fullConfig[0]->elements[0]->name = 12345;
 
         new Config($this->fullConfig);
     }
 
+    public function testEmptyElementName()
+    {
+        $this->setExpectedException(ConfigValueException::class);
+
+        $this->fullConfig[0]->elements[0]->name = '';
+
+        new Config($this->fullConfig);
+    }
+
     public function testMissingTextRequired()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
@@ -467,7 +486,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingTextLabel()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
@@ -478,7 +497,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingTextValue()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
@@ -489,7 +508,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingTextMicrocopy()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
@@ -500,7 +519,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingTextLimitType()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
@@ -511,7 +530,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingTextLimit()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
@@ -522,7 +541,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingTextPlainText()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
@@ -533,7 +552,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testAdditionalTextAttribute()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
@@ -544,7 +563,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidTextRequired()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
@@ -555,7 +574,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidTextLabel()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
@@ -566,7 +585,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidTextValue()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
@@ -577,7 +596,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidTextMicrocopy()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
@@ -588,7 +607,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidTextLimitType()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
@@ -597,9 +616,20 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         new Config($this->fullConfig);
     }
 
-    public function testInvalidTextLimit()
+    public function testInvalidTextLimit1()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
+
+        $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
+
+        $this->fullConfig[0]->elements[0]->limit = '0';
+
+        new Config($this->fullConfig);
+    }
+
+    public function testInvalidTextLimit2()
+    {
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
@@ -610,7 +640,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidTextPlainText()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
@@ -621,7 +651,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingFilesRequired()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('files', $this->fullConfig[0]->elements[2]->type);
 
@@ -632,7 +662,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingFilesLabel()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('files', $this->fullConfig[0]->elements[2]->type);
 
@@ -643,7 +673,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingFilesMicrocopy()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('files', $this->fullConfig[0]->elements[2]->type);
 
@@ -654,7 +684,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testAdditionalFilesAttribute()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('files', $this->fullConfig[0]->elements[2]->type);
 
@@ -665,7 +695,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidFilesRequired()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('files', $this->fullConfig[0]->elements[2]->type);
 
@@ -676,7 +706,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidFilesLabel()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('files', $this->fullConfig[0]->elements[2]->type);
 
@@ -687,7 +717,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidFilesMicrocopy()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('files', $this->fullConfig[0]->elements[2]->type);
 
@@ -698,7 +728,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingSectionTitle()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('section', $this->fullConfig[0]->elements[3]->type);
 
@@ -709,7 +739,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingSectionSubtitle()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('section', $this->fullConfig[0]->elements[3]->type);
 
@@ -720,7 +750,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testAdditionalSectionAttribute()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('section', $this->fullConfig[0]->elements[3]->type);
 
@@ -731,7 +761,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidSectionTitle()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('section', $this->fullConfig[0]->elements[3]->type);
 
@@ -742,7 +772,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidSectionSubtitle()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('section', $this->fullConfig[0]->elements[3]->type);
 
@@ -753,7 +783,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingChoiceRadioRequired()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -764,7 +794,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingChoiceRadioLabel()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -775,7 +805,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingChoiceRadioMicrocopy()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -786,7 +816,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingChoiceRadioOtherOption()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -797,7 +827,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingChoiceRadioOptions()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -808,7 +838,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingChoiceRadioOptionName()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -819,7 +849,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingChoiceRadioOptionLabel()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -830,7 +860,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingChoiceRadioOptionSelected()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -841,7 +871,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testAdditionalChoiceRadioAttribute()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -852,7 +882,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testAdditionalChoiceRadioOptionAttribute()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -863,7 +893,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testAdditionalChoiceRadioOtherOptionAttribute()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[1]->type);
         $this->assertTrue($this->fullConfig[1]->elements[1]->other_option);
@@ -875,7 +905,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidChoiceRadioRequired()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -886,7 +916,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidChoiceRadioLabel()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -897,7 +927,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidChoiceRadioMicrocopy()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -908,7 +938,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidChoiceRadioOtherOption()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -919,7 +949,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidChoiceRadioOptions()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -930,7 +960,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidChoiceRadioOptionName()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -941,7 +971,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidChoiceRadioOptionLabel()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -952,7 +982,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidChoiceRadioOptionSelected()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -963,7 +993,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidChoiceRadioOptionValues()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[1]->type);
         $this->assertTrue($this->fullConfig[1]->elements[1]->other_option);
@@ -975,7 +1005,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingChoiceCheckboxRequired()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
@@ -986,7 +1016,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingChoiceCheckboxLabel()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
@@ -997,7 +1027,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingChoiceCheckboxMicrocopy()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
@@ -1008,7 +1038,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingChoiceCheckboxOptions()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
@@ -1019,7 +1049,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingChoiceCheckboxOptionName()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
@@ -1030,7 +1060,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingChoiceCheckboxOptionLabel()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
@@ -1041,7 +1071,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingChoiceCheckboxOptionSelected()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
@@ -1052,7 +1082,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testAdditionalChoiceCheckboxAttribute()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
@@ -1063,7 +1093,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testAdditionalChoiceCheckboxOptionAttribute()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
@@ -1074,7 +1104,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidChoiceCheckboxRequired()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
@@ -1085,7 +1115,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidChoiceCheckboxLabel()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
@@ -1096,7 +1126,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidChoiceCheckboxMicrocopy()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
@@ -1107,7 +1137,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidChoiceCheckboxOptions()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
@@ -1118,7 +1148,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidChoiceCheckboxOptionName()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
@@ -1129,7 +1159,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidChoiceCheckboxOptionLabel()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
@@ -1140,7 +1170,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidChoiceCheckboxOptionSelected()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
@@ -1151,7 +1181,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testNonUniqueElementNames()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->fullConfig[0]->elements[0]->name = 'el12345';
         $this->fullConfig[0]->elements[1]->name = 'el12345';
@@ -1161,7 +1191,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testNonUniqueOptionNames()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
@@ -1173,7 +1203,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testNoOptionsForChoiceRadio()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -1184,7 +1214,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testNoOptionsForChoiceCheckbox()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
@@ -1195,7 +1225,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testNonObjectOptionForChoiceRadio()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -1206,7 +1236,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testNonObjectOptionForChoiceCheckbox()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
@@ -1217,7 +1247,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMultipleOptionsSelectedForChoiceRadio()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -1229,7 +1259,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingOtherOptionValueForChoiceRadio()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[1]->type);
 
@@ -1240,7 +1270,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testUnnecessaryOptionValueForChoiceRadio()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
         $this->assertFalse($this->fullConfig[1]->elements[0]->other_option);
@@ -1252,7 +1282,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testOtherOptionValueOnOtherThanLastOptionForChoiceRadio()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[1]->type);
         $this->assertTrue($this->fullConfig[1]->elements[1]->other_option);
@@ -1264,7 +1294,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testOtherOptionValueEmptyIfOtherOptionNotSelectedForChoiceRadio()
     {
-        $this->setExpectedException('DomainException');
+        $this->setExpectedException(ConfigValueException::class);
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[1]->type);
         $this->assertEquals(3, count($this->fullConfig[1]->elements[1]->options));
