@@ -36,5 +36,4 @@ final class Config
     {
         return (string) $this === (string) $config;
     }
-
 }

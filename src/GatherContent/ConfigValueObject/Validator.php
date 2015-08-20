@@ -245,8 +245,9 @@ final class Validator
             Assertion::keyExists(get_object_vars($option), 'value', 'Option value attribute is required');
             Assertion::string($option->value, 'Option value attribute must be string');
             Assertion::eq(count(get_object_vars($option)), 4, 'Option must not have additional attributes');
-        }
-        else {
+
+        } else {
+
             Assertion::eq(count(get_object_vars($option)), 3, 'Option must not have additional attributes');
         }
     }
@@ -280,5 +281,4 @@ final class Validator
             }
         }
     }
-
 }
