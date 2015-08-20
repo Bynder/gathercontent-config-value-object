@@ -882,7 +882,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testAdditionalChoiceRadioOptionAttribute()
     {
-        $this->setExpectedException(ConfigValueException::class, 'Option value attribute is required');
+        $this->setExpectedException(ConfigValueException::class, 'Option must not have additional attributes');
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
@@ -1093,7 +1093,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testAdditionalChoiceCheckboxOptionAttribute()
     {
-        $this->setExpectedException(ConfigValueException::class, 'Option value attribute is required');
+        $this->setExpectedException(ConfigValueException::class, 'Option must not have additional attributes');
 
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
@@ -1259,7 +1259,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMissingOtherOptionValueForChoiceRadio()
     {
-        $this->setExpectedException(ConfigValueException::class, 'Other option value is required');
+        $this->setExpectedException(ConfigValueException::class, 'Option value attribute is required');
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[1]->type);
 
@@ -1270,7 +1270,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testUnnecessaryOptionValueForChoiceRadio()
     {
-        $this->setExpectedException(ConfigValueException::class, 'Option value must not be present for regular option');
+        $this->setExpectedException(ConfigValueException::class, 'Option must not have additional attributes');
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
         $this->assertFalse($this->fullConfig[1]->elements[0]->other_option);
@@ -1282,7 +1282,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testOtherOptionValueOnOtherThanLastOptionForChoiceRadio()
     {
-        $this->setExpectedException(ConfigValueException::class, 'Option value must not be present for regular option');
+        $this->setExpectedException(ConfigValueException::class, 'Option must not have additional attributes');
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[1]->type);
         $this->assertTrue($this->fullConfig[1]->elements[1]->other_option);

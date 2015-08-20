@@ -86,9 +86,6 @@ final class Validator
                         case 'choice_radio':
                             $this->validateChoiceRadioElement($element);
                             $this->validateMaxOneOptionSelectedForChoiceRadioElement($element);
-                            $this->validateOtherOptionValuePresentForChoiceRadioElement($element);
-                            $this->validateRegularOptionValueNotPresentForChoiceRadioElement($element);
-                            $this->validateOtherOptionValuePresentOnlyOnTheLastOptionForChoiceRadioElement($element);
                             $this->validateOtherOptionValueEmptyIfOtherOptionNotSelected($element);
                             break;
 
@@ -158,7 +155,7 @@ final class Validator
         Assertion::notEmpty($element->options, 'Element must have at least one option');
 
         foreach ($element->options as $option) {
-            $this->validateOptionFormat($option);
+            $this->validateOptionFormatForChoiceRadio($option, $element);
         }
     }
 
@@ -177,46 +174,6 @@ final class Validator
 
             if ($selectedCounter > 1) {
                 throw new ConfigValueException('Element checkbox_radio must have at most one option selected');
-            }
-        }
-    }
-
-    private function validateOtherOptionValuePresentForChoiceRadioElement($element)
-    {
-        if ($element->other_option) {
-
-            $lastOption = end($element->options);
-
-            if (!isset($lastOption->value)) {
-                throw new ConfigValueException('Other option value is required');
-            }
-        }
-    }
-
-    private function validateRegularOptionValueNotPresentForChoiceRadioElement($element)
-    {
-        if (!$element->other_option) {
-
-            $lastOption = end($element->options);
-
-            if (isset($lastOption->value)) {
-                throw new ConfigValueException('Option value must not be present for regular option');
-            }
-        }
-    }
-
-    private function validateOtherOptionValuePresentOnlyOnTheLastOptionForChoiceRadioElement($element)
-    {
-        $options = array_slice($element->options, 0, -1);
-
-        if (count($options) > 0) {
-
-            foreach ($options as $option) {
-
-                if (isset($option->value)) {
-
-                    throw new ConfigValueException('Option value must not be present for regular option');
-                }
             }
         }
     }
@@ -247,7 +204,7 @@ final class Validator
         Assertion::notEmpty($element->options, 'Element must have at least one option');
 
         foreach ($element->options as $option) {
-            $this->validateOptionFormat($option);
+            $this->validateOptionFormatForChoiceCheckbox($option);
         }
     }
 
@@ -271,7 +228,7 @@ final class Validator
         }
     }
 
-    private function validateOptionFormat($option)
+    private function validateOptionFormatForChoiceRadio($option, $element)
     {
         Assertion::isObject($option, 'Option must be an object');
         Assertion::keyExists(get_object_vars($option), 'name', 'Option name attribute is required');
@@ -282,15 +239,28 @@ final class Validator
         Assertion::boolean($option->selected, 'Option selected attribute must be boolean');
         Assertion::notEmpty($option->name, 'Option name attribute must not be empty');
 
-        if (count(get_object_vars($option)) == 4) {
+        if ($element->other_option && json_encode($option) == json_encode(end($element->options))) {
 
             Assertion::keyExists(get_object_vars($option), 'value', 'Option value attribute is required');
             Assertion::string($option->value, 'Option value attribute must be string');
+            Assertion::eq(count(get_object_vars($option)), 4, 'Option must not have additional attributes');
         }
         else {
-
             Assertion::eq(count(get_object_vars($option)), 3, 'Option must not have additional attributes');
         }
+    }
+
+    private function validateOptionFormatForChoiceCheckbox($option)
+    {
+        Assertion::isObject($option, 'Option must be an object');
+        Assertion::keyExists(get_object_vars($option), 'name', 'Option name attribute is required');
+        Assertion::keyExists(get_object_vars($option), 'label', 'Option label attribute is required');
+        Assertion::keyExists(get_object_vars($option), 'selected', 'Option selected attribute is required');
+        Assertion::string($option->name, 'Option name attribute must be string');
+        Assertion::string($option->label, 'Option label attribute must be string');
+        Assertion::boolean($option->selected, 'Option selected attribute must be boolean');
+        Assertion::notEmpty($option->name, 'Option name attribute must not be empty');
+        Assertion::eq(count(get_object_vars($option)), 3, 'Option must not have additional attributes');
     }
 
     private function validateUniqueOptionNames($config)
