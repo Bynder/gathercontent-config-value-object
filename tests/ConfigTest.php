@@ -25,7 +25,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
                         'value' => '<p>How goes it?</p>',
                         'microcopy' => 'Microcopy',
                         'limit_type' => 'words',
-                        'limit' => 50,
+                        'limit' => '50',
                         'plain_text' => false,
                     ],
                     (object)[
@@ -36,7 +36,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
                         'value' => 'How goes it?',
                         'microcopy' => 'Microcopy',
                         'limit_type' => 'chars',
-                        'limit' => 500,
+                        'limit' => '500',
                         'plain_text' => true,
                     ],
                     (object)[
@@ -618,6 +618,8 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidTextLimit1()
     {
+        $this->markTestSkipped('Legacy data currently forces us to accept string instead of integer');
+
         $this->setExpectedException(ConfigValueException::class, 'Element limit attribute must be integer');
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
@@ -633,7 +635,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
-        $this->fullConfig[0]->elements[0]->limit = -50;
+        $this->fullConfig[0]->elements[0]->limit = '-50';
 
         new Config($this->fullConfig);
     }
