@@ -88,17 +88,17 @@ class ConfigTest extends PHPUnit_Framework_TestCase
                         'other_option' => true,
                         'options' => [
                             (object)[
-                                'name' => 'op3',
+                                'name' => 'op1',
                                 'label' => 'First choice',
                                 'selected' => false,
                             ],
                             (object)[
-                                'name' => 'op4',
+                                'name' => 'op2',
                                 'label' => 'Second choice',
                                 'selected' => true,
                             ],
                             (object)[
-                                'name' => 'op5',
+                                'name' => 'op3',
                                 'label' => 'Other',
                                 'selected' => false,
                                 'value' => '',
@@ -114,17 +114,17 @@ class ConfigTest extends PHPUnit_Framework_TestCase
                         'other_option' => true,
                         'options' => [
                             (object)[
-                                'name' => 'op6',
+                                'name' => 'op1',
                                 'label' => 'First choice',
                                 'selected' => false,
                             ],
                             (object)[
-                                'name' => 'op7',
+                                'name' => 'op2',
                                 'label' => 'Second choice',
                                 'selected' => false,
                             ],
                             (object)[
-                                'name' => 'op8',
+                                'name' => 'op3',
                                 'label' => 'Other',
                                 'selected' => true,
                                 'value' => 'How goes it?',
@@ -139,12 +139,12 @@ class ConfigTest extends PHPUnit_Framework_TestCase
                         'microcopy' => 'Microcopy',
                         'options' => [
                             (object)[
-                                'name' => 'op9',
+                                'name' => 'op1',
                                 'label' => 'First choice',
                                 'selected' => false,
                             ],
                             (object)[
-                                'name' => 'op10',
+                                'name' => 'op2',
                                 'label' => 'Second choice',
                                 'selected' => false,
                             ],
@@ -158,12 +158,12 @@ class ConfigTest extends PHPUnit_Framework_TestCase
                         'microcopy' => 'Microcopy',
                         'options' => [
                             (object)[
-                                'name' => 'op11',
+                                'name' => 'op1',
                                 'label' => 'First choice',
                                 'selected' => true,
                             ],
                             (object)[
-                                'name' => 'op12',
+                                'name' => 'op2',
                                 'label' => 'Second choice',
                                 'selected' => true,
                             ],
@@ -1199,6 +1199,20 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->fullConfig[1]->elements[3]->options[0]->name = 'op6';
         $this->fullConfig[1]->elements[3]->options[1]->name = 'op6';
+
+        new Config($this->fullConfig);
+    }
+
+    public function testItemWideNonUniqueOptionNames()
+    {
+        $this->markTestSkipped('Legacy data currently forces us to allow reuse of option name between different elements');
+
+        $this->setExpectedException(ConfigValueException::class, 'Option names must be unique');
+
+        $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
+
+        $this->fullConfig[1]->elements[0]->options[0]->name = 'op12345';
+        $this->fullConfig[1]->elements[1]->options[1]->name = 'op12345';
 
         new Config($this->fullConfig);
     }
