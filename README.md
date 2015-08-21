@@ -101,7 +101,7 @@ All elements must be objects. All attributes are required. No additional attribu
   "name": "el2",     // string, not empty, unique
   "required": false, // boolean
   "label": "Photos", // string
-  "microcopy": "",   // string
+  "microcopy": ""    // string
 }
 ```
 
@@ -112,7 +112,7 @@ All elements must be objects. All attributes are required. No additional attribu
   "type": "section",                 // string, must be "section"
   "name": "el3",                     // string, not empty, unique
   "title": "Title",                  // string
-  "subtitle": "<p>How goes it?</p>", // string
+  "subtitle": "<p>How goes it?</p>"  // string
 }
 ```
 
@@ -153,7 +153,7 @@ Most options will look like this:
 {
   "name": "op1",       // string, not empty, unique element-wide
   "label": "Option 1", // string
-  "selected": false,   // boolean
+  "selected": false    // boolean
 }
 ```
 
