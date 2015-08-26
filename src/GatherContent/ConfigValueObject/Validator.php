@@ -114,7 +114,7 @@ final class Validator
         Assertion::string($element->value, 'Element value attribute must be string');
         Assertion::string($element->microcopy, 'Element microcopy attribute must be string');
         Assertion::string($element->limit_type, 'Element limit_type attribute must be string');
-        Assertion::numeric($element->limit, 'Element limit attribute must be numeric');
+        Assertion::integer($element->limit, 'Element limit attribute must be integer');
         Assertion::boolean($element->plain_text, 'Element plain_text attribute must be boolean');
         Assertion::inArray($element->limit_type, ['words', 'chars'], 'Element must be of a supported type');
         Assertion::min($element->limit, 0, 'Element limit attribute must not be negative');

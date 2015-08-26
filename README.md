@@ -64,7 +64,6 @@ Must be an object. All attributes are required. No additional attributes are all
   "elements": [ /* tab elements */ ] // array
 }
 ```
-he-rules
 #### Element structure
 
 Allowed element types:
@@ -88,7 +87,7 @@ All elements must be objects. All attributes are required. No additional attribu
   "value": "<p>Hello world</p>", // string
   "microcopy": "",               // string
   "limit_type": "words",         // string, either "words" or "chars"
-  "limit": "1000",               // string, non-negative number
+  "limit": 1000,                 // integer, non-negative
   "plain_text": false            // boolean
 }
 ```

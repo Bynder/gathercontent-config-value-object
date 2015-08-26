@@ -618,8 +618,6 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidTextLimit1()
     {
-        $this->markTestSkipped('Legacy data currently forces us to accept all numeric values instead of just integers');
-
         $this->setExpectedException(ConfigValueException::class, 'Element limit attribute must be integer');
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
@@ -635,14 +633,14 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
-        $this->fullConfig[0]->elements[0]->limit = '-50';
+        $this->fullConfig[0]->elements[0]->limit = -50;
 
         new Config($this->fullConfig);
     }
 
     public function testInvalidTextLimit3()
     {
-        $this->setExpectedException(ConfigValueException::class, 'Element limit attribute must be numeric');
+        $this->setExpectedException(ConfigValueException::class, 'Element limit attribute must be integer');
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
@@ -653,7 +651,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidTextLimit4()
     {
-        $this->setExpectedException(ConfigValueException::class, 'Element limit attribute must be numeric');
+        $this->setExpectedException(ConfigValueException::class, 'Element limit attribute must be integer');
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
