@@ -150,7 +150,7 @@ Most options will look like this:
 
 ```javascript
 {
-  "name": "op1",       // string, not empty, unique element-wide
+  "name": "op1",       // string, not empty, unique
   "label": "Option 1", // string
   "selected": false    // boolean
 }
@@ -160,7 +160,7 @@ The only exception is the last option for `choice_radio` element if the `other_o
 
 ```javascript
 {
-  "name": "op1",       // string, not empty, unique element-wide
+  "name": "op1",       // string, not empty, unique
   "label": "Other",    // string
   "selected": true,    // boolean
   "value": "Something" // string

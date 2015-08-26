@@ -11,6 +11,7 @@ final class Validator
         $this->validateUniqueTabNames($config);
         $this->validateElementFormat($config);
         $this->validateUniqueElementNames($config);
+        $this->validateUniqueOptionNames($config);
     }
 
     private function validateConfigNotEmpty($config)
@@ -86,12 +87,10 @@ final class Validator
                             $this->validateChoiceRadioElement($element);
                             $this->validateMaxOneOptionSelectedForChoiceRadioElement($element);
                             $this->validateOtherOptionValueEmptyIfOtherOptionNotSelected($element);
-                            $this->validateUniqueOptionNames($element);
                             break;
 
                         case 'choice_checkbox':
                             $this->validateChoiceCheckboxElement($element);
-                            $this->validateUniqueOptionNames($element);
                             break;
                     }
                 }
@@ -265,19 +264,28 @@ final class Validator
         Assertion::eq(count(get_object_vars($option)), 3, 'Option must not have additional attributes');
     }
 
-    private function validateUniqueOptionNames($element)
+    private function validateUniqueOptionNames($config)
     {
         $names = [];
 
-        if (in_array($element->type, ['choice_radio', 'choice_checkbox'])) {
+        foreach ($config as $tab) {
 
-            foreach ($element->options as $option) {
+            if (count($tab->elements) > 0) {
 
-                if (in_array($option->name, $names)) {
-                    throw new ConfigValueException('Option names must be unique');
+                foreach ($tab->elements as $element) {
+
+                    if (in_array($element->type, ['choice_radio', 'choice_checkbox'])) {
+
+                        foreach ($element->options as $option) {
+
+                            if (in_array($option->name, $names)) {
+                                throw new ConfigValueException('Option names must be unique');
+                            }
+
+                            $names[] = $option->name;
+                        }
+                    }
                 }
-
-                $names[] = $option->name;
             }
         }
     }
