@@ -6,5 +6,5 @@ use Assert\Assertion as BaseAssertion;
 
 class Assertion extends BaseAssertion
 {
-    protected static $exceptionClass = ConfigValueException::class;
+    protected static $exceptionClass = 'GatherContent\ConfigValueObject\ConfigValueException';
 }
