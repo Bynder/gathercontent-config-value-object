@@ -41,7 +41,7 @@ final class Validator
 
     private function validateUniqueTabNames($config)
     {
-        $names = [];
+        $names = array();
 
         foreach ($config as $tab) {
 
@@ -66,7 +66,7 @@ final class Validator
                     Assertion::keyExists(get_object_vars($element), 'name', 'Element name attribute is required');
                     Assertion::string($element->type, 'Element type attribute must be string');
                     Assertion::string($element->name, 'Element name attribute must be string');
-                    Assertion::inArray($element->type, ['text', 'files', 'section', 'choice_radio', 'choice_checkbox'], 'Element must be of a supported type');
+                    Assertion::inArray($element->type, array('text', 'files', 'section', 'choice_radio', 'choice_checkbox'), 'Element must be of a supported type');
                     Assertion::notEmpty($element->name, 'Element name attribute must not be empty');
 
                     switch ($element->type) {
@@ -117,7 +117,7 @@ final class Validator
         Assertion::integer($element->limit, 'Element limit attribute must be integer');
         Assertion::boolean($element->plain_text, 'Element plain_text attribute must be boolean');
         Assertion::notEmpty($element->label, 'Element label attribute must not be empty');
-        Assertion::inArray($element->limit_type, ['words', 'chars'], 'Element must be of a supported type');
+        Assertion::inArray($element->limit_type, array('words', 'chars'), 'Element must be of a supported type');
         Assertion::min($element->limit, 0, 'Element limit attribute must not be negative');
     }
 
@@ -223,7 +223,7 @@ final class Validator
 
     private function validateUniqueElementNames($config)
     {
-        $names = [];
+        $names = array();
 
         foreach ($config as $tab) {
 
@@ -281,7 +281,7 @@ final class Validator
 
     private function validateUniqueOptionNames($config)
     {
-        $names = [];
+        $names = array();
 
         foreach ($config as $tab) {
 
@@ -289,7 +289,7 @@ final class Validator
 
                 foreach ($tab->elements as $element) {
 
-                    if (in_array($element->type, ['choice_radio', 'choice_checkbox'])) {
+                    if (in_array($element->type, array('choice_radio', 'choice_checkbox'))) {
 
                         foreach ($element->options as $option) {
 

@@ -11,13 +11,13 @@ class ConfigTest extends PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $this->fullConfig = [
-            (object)[
+        $this->fullConfig = array(
+            (object)array(
                 'label' => 'Content',
                 'name' => 'tab1',
                 'hidden' => false,
-                'elements' => [
-                    (object)[
+                'elements' => array(
+                    (object)array(
                         'type' => 'text',
                         'name' => 'el1',
                         'required' => false,
@@ -27,8 +27,8 @@ class ConfigTest extends PHPUnit_Framework_TestCase
                         'limit_type' => 'words',
                         'limit' => 50,
                         'plain_text' => false,
-                    ],
-                    (object)[
+                    ),
+                    (object)array(
                         'type' => 'text',
                         'name' => 'el2',
                         'required' => false,
@@ -38,140 +38,140 @@ class ConfigTest extends PHPUnit_Framework_TestCase
                         'limit_type' => 'chars',
                         'limit' => 500,
                         'plain_text' => true,
-                    ],
-                    (object)[
+                    ),
+                    (object)array(
                         'type' => 'files',
                         'name' => 'el3',
                         'required' => false,
                         'label' => 'Label',
                         'microcopy' => 'Microcopy',
-                    ],
-                    (object)[
+                    ),
+                    (object)array(
                         'type' => 'section',
                         'name' => 'el4',
                         'title' => 'Title',
                         'subtitle' => '<p>How goes it?</p>',
-                    ],
-                ],
-            ],
-            (object)[
+                    ),
+                ),
+            ),
+            (object)array(
                 'label' => 'Meta',
                 'name' => 'tab2',
                 'hidden' => true,
-                'elements' => [
-                    (object)[
+                'elements' => array(
+                    (object)array(
                         'type' => 'choice_radio',
                         'name' => 'el5',
                         'required' => false,
                         'label' => 'Label',
                         'microcopy' => 'Microcopy',
                         'other_option' => false,
-                        'options' => [
-                            (object)[
+                        'options' => array(
+                            (object)array(
                                 'name' => 'op1',
                                 'label' => 'First choice',
                                 'selected' => false,
-                            ],
-                            (object)[
+                            ),
+                            (object)array(
                                 'name' => 'op2',
                                 'label' => 'Second choice',
                                 'selected' => false,
-                            ],
-                        ],
-                    ],
-                    (object)[
+                            ),
+                        ),
+                    ),
+                    (object)array(
                         'type' => 'choice_radio',
                         'name' => 'el6',
                         'required' => false,
                         'label' => 'Label',
                         'microcopy' => 'Microcopy',
                         'other_option' => true,
-                        'options' => [
-                            (object)[
+                        'options' => array(
+                            (object)array(
                                 'name' => 'op3',
                                 'label' => 'First choice',
                                 'selected' => false,
-                            ],
-                            (object)[
+                            ),
+                            (object)array(
                                 'name' => 'op4',
                                 'label' => 'Second choice',
                                 'selected' => true,
-                            ],
-                            (object)[
+                            ),
+                            (object)array(
                                 'name' => 'op5',
                                 'label' => 'Other',
                                 'selected' => false,
                                 'value' => '',
-                            ],
-                        ],
-                    ],
-                    (object)[
+                            ),
+                        ),
+                    ),
+                    (object)array(
                         'type' => 'choice_radio',
                         'name' => 'el7',
                         'required' => false,
                         'label' => 'Label',
                         'microcopy' => 'Microcopy',
                         'other_option' => true,
-                        'options' => [
-                            (object)[
+                        'options' => array(
+                            (object)array(
                                 'name' => 'op6',
                                 'label' => 'First choice',
                                 'selected' => false,
-                            ],
-                            (object)[
+                            ),
+                            (object)array(
                                 'name' => 'op7',
                                 'label' => 'Second choice',
                                 'selected' => false,
-                            ],
-                            (object)[
+                            ),
+                            (object)array(
                                 'name' => 'op8',
                                 'label' => 'Other',
                                 'selected' => true,
                                 'value' => 'How goes it?',
-                            ],
-                        ],
-                    ],
-                    (object)[
+                            ),
+                        ),
+                    ),
+                    (object)array(
                         'type' => 'choice_checkbox',
                         'name' => 'el8',
                         'required' => false,
                         'label' => 'Label',
                         'microcopy' => 'Microcopy',
-                        'options' => [
-                            (object)[
+                        'options' => array(
+                            (object)array(
                                 'name' => 'op9',
                                 'label' => 'First choice',
                                 'selected' => false,
-                            ],
-                            (object)[
+                            ),
+                            (object)array(
                                 'name' => 'op10',
                                 'label' => 'Second choice',
                                 'selected' => false,
-                            ],
-                        ],
-                    ],
-                    (object)[
+                            ),
+                        ),
+                    ),
+                    (object)array(
                         'type' => 'choice_checkbox',
                         'name' => 'el9',
                         'required' => false,
                         'label' => 'Label',
                         'microcopy' => 'Microcopy',
-                        'options' => [
-                            (object)[
+                        'options' => array(
+                            (object)array(
                                 'name' => 'op11',
                                 'label' => 'First choice',
                                 'selected' => true,
-                            ],
-                            (object)[
+                            ),
+                            (object)array(
                                 'name' => 'op12',
                                 'label' => 'Second choice',
                                 'selected' => true,
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        );
     }
 
     public function testFullConfig()
@@ -184,14 +184,14 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testCastingToString()
     {
-        $originalConfig = [
-            (object)[
+        $originalConfig = array(
+            (object)array(
                 'label' => 'Content',
                 'name' => 'tab1',
                 'hidden' => false,
-                'elements' => [],
-            ],
-        ];
+                'elements' => array(),
+            ),
+        );
 
         $expected = '[{"label":"Content","name":"tab1","hidden":false,"elements":[]}]';
 
@@ -213,23 +213,23 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testNotEqual()
     {
-        $originalConfig1 = [
-            (object)[
+        $originalConfig1 = array(
+            (object)array(
                 'label' => 'Content',
                 'name' => 'tab1',
                 'hidden' => false,
-                'elements' => [],
-            ],
-        ];
+                'elements' => array(),
+            ),
+        );
 
-        $originalConfig2 = [
-            (object)[
+        $originalConfig2 = array(
+            (object)array(
                 'label' => 'Meta',
                 'name' => 'tab2',
                 'hidden' => false,
-                'elements' => [],
-            ],
-        ];
+                'elements' => array(),
+            ),
+        );
 
         $config1 = new Config($originalConfig1);
         $config2 = new Config($originalConfig2);
@@ -241,23 +241,23 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testEqualsIsCaseSensitive()
     {
-        $config1 = new Config([
-            (object) [
+        $config1 = new Config(array(
+            (object)array(
                 'label' => 'Content',
                 'name' => 'tab',
                 'hidden' => false,
-                'elements' => [],
-            ]
-        ]);
+                'elements' => array(),
+            )
+        ));
 
-        $config2 = new Config([
-            (object) [
+        $config2 = new Config(array(
+            (object)array(
                 'label' => 'content',
                 'name' => 'tab',
                 'hidden' => false,
-                'elements' => [],
-            ]
-        ]);
+                'elements' => array(),
+            )
+        ));
 
         $result = $config1->equals($config2);
 
@@ -414,7 +414,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('GatherContent\ConfigValueObject\ConfigValueException', 'Element must be an object');
 
-        $this->fullConfig[0]->elements = ['a', 's', 'd', 'f'];
+        $this->fullConfig[0]->elements = array('a', 's', 'd', 'f');
 
         new Config($this->fullConfig);
     }
@@ -589,7 +589,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
-        $this->fullConfig[0]->elements[0]->value = ['test'];
+        $this->fullConfig[0]->elements[0]->value = array('test');
 
         new Config($this->fullConfig);
     }
@@ -1307,7 +1307,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
-        $this->fullConfig[1]->elements[0]->options = [];
+        $this->fullConfig[1]->elements[0]->options = array();
 
         new Config($this->fullConfig);
     }
@@ -1318,7 +1318,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
-        $this->fullConfig[1]->elements[3]->options = [];
+        $this->fullConfig[1]->elements[3]->options = array();
 
         new Config($this->fullConfig);
     }
