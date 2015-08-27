@@ -83,7 +83,7 @@ All elements must be objects. All attributes are required. No additional attribu
   "type": "text",                // string, must be "text"
   "name": "el1",                 // string, not empty, unique
   "required": false,             // boolean
-  "label": "Blog post",          // string
+  "label": "Blog post",          // string, not empty
   "value": "<p>Hello world</p>", // string
   "microcopy": "",               // string
   "limit_type": "words",         // string, either "words" or "chars"
@@ -99,7 +99,7 @@ All elements must be objects. All attributes are required. No additional attribu
   "type": "files",   // string, must be "files"
   "name": "el2",     // string, not empty, unique
   "required": false, // boolean
-  "label": "Photos", // string
+  "label": "Photos", // string, not empty
   "microcopy": ""    // string
 }
 ```
@@ -110,7 +110,7 @@ All elements must be objects. All attributes are required. No additional attribu
 {
   "type": "section",                 // string, must be "section"
   "name": "el3",                     // string, not empty, unique
-  "title": "Title",                  // string
+  "title": "Title",                  // string, not empty
   "subtitle": "<p>How goes it?</p>"  // string
 }
 ```
@@ -122,7 +122,7 @@ All elements must be objects. All attributes are required. No additional attribu
   "type": "choice_radio",              // string, must be "choice_radio"
   "name": "el4",                       // string, not empty, unique
   "required": false,                   // boolean
-  "label": "Label",                    // string
+  "label": "Label",                    // string, not empty
   "microcopy": "",                     // string
   "other_option": false,               // boolean
   "options": [ /* element options */ ] // array, must have at least one option
@@ -138,7 +138,7 @@ At least two options required if `other_option` is `true`.
   "type": "choice_checkbox",           // string, must be "choice_checkbox"
   "name": "el4",                       // string, not empty, unique
   "required": false,                   // boolean
-  "label": "Label",                    // string
+  "label": "Label",                    // string, not empty
   "microcopy": "",                     // string
   "options": [ /* element options */ ] // array, must have at least one option
 }
@@ -153,7 +153,7 @@ Most options will look like this:
 ```javascript
 {
   "name": "op1",       // string, not empty, unique
-  "label": "Option 1", // string
+  "label": "Option 1", // string, not empty
   "selected": false    // boolean
 }
 ```
@@ -163,7 +163,7 @@ The only exception is the last option for `choice_radio` element if the `other_o
 ```javascript
 {
   "name": "op1",       // string, not empty, unique
-  "label": "Other",    // string
+  "label": "Other",    // string, not empty
   "selected": true,    // boolean
   "value": "Something" // string
 }

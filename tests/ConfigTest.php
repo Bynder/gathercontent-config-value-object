@@ -671,6 +671,17 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         new Config($this->fullConfig);
     }
 
+    public function testEmptyTextLabel()
+    {
+        $this->setExpectedException(ConfigValueException::class, 'Element label attribute must not be empty');
+
+        $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
+
+        $this->fullConfig[0]->elements[0]->label = '';
+
+        new Config($this->fullConfig);
+    }
+
     public function testMissingFilesRequired()
     {
         $this->setExpectedException(ConfigValueException::class, 'Element required attribute is required');
@@ -748,6 +759,17 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         new Config($this->fullConfig);
     }
 
+    public function testEmptyFilesLabel()
+    {
+        $this->setExpectedException(ConfigValueException::class, 'Element label attribute must not be empty');
+
+        $this->assertEquals('files', $this->fullConfig[0]->elements[2]->type);
+
+        $this->fullConfig[0]->elements[2]->label = '';
+
+        new Config($this->fullConfig);
+    }
+
     public function testMissingSectionTitle()
     {
         $this->setExpectedException(ConfigValueException::class, 'Element title attribute is required');
@@ -799,6 +821,17 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('section', $this->fullConfig[0]->elements[3]->type);
 
         $this->fullConfig[0]->elements[3]->subtitle = null;
+
+        new Config($this->fullConfig);
+    }
+
+    public function testEmptySectionTitle()
+    {
+        $this->setExpectedException(ConfigValueException::class, 'Element title attribute must not be empty');
+
+        $this->assertEquals('section', $this->fullConfig[0]->elements[3]->type);
+
+        $this->fullConfig[0]->elements[3]->title = '';
 
         new Config($this->fullConfig);
     }
@@ -976,6 +1009,17 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
         $this->fullConfig[1]->elements[0]->options = 'none';
+
+        new Config($this->fullConfig);
+    }
+
+    public function testEmptyChoiceRadioLabel()
+    {
+        $this->setExpectedException(ConfigValueException::class, 'Element label attribute must not be empty');
+
+        $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
+
+        $this->fullConfig[1]->elements[0]->label = '';
 
         new Config($this->fullConfig);
     }
@@ -1168,6 +1212,17 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         new Config($this->fullConfig);
     }
 
+    public function testEmptyChoiceCheckboxLabel()
+        {
+            $this->setExpectedException(ConfigValueException::class, 'Element label attribute must not be empty');
+
+            $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
+
+            $this->fullConfig[1]->elements[3]->label = '';
+
+            new Config($this->fullConfig);
+        }
+
     public function testInvalidChoiceCheckboxOptionName()
     {
         $this->setExpectedException(ConfigValueException::class, 'Option name attribute must be string');
@@ -1197,6 +1252,17 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
         $this->fullConfig[1]->elements[3]->options[0]->selected = 'false';
+
+        new Config($this->fullConfig);
+    }
+
+    public function testEmptyChoiceCheckboxOptionLabel()
+    {
+        $this->setExpectedException(ConfigValueException::class, 'Option label attribute must not be empty');
+
+        $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
+
+        $this->fullConfig[1]->elements[3]->options[0]->label = '';
 
         new Config($this->fullConfig);
     }
@@ -1322,6 +1388,31 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->fullConfig[1]->elements[1]->other_option);
 
         $this->fullConfig[1]->elements[1]->options[0]->value = '';
+
+        new Config($this->fullConfig);
+    }
+
+    public function testEmptyOptionLabelForChoiceRadio()
+    {
+        $this->setExpectedException(ConfigValueException::class, 'Option label attribute must not be empty');
+
+        $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
+        $this->assertFalse($this->fullConfig[1]->elements[0]->other_option);
+
+        $this->fullConfig[1]->elements[0]->options[1]->label = '';
+
+        new Config($this->fullConfig);
+    }
+
+    public function testEmptyOtherOptionLabelForChoiceRadio()
+    {
+        $this->setExpectedException(ConfigValueException::class, 'Option label attribute must not be empty');
+
+        $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[1]->type);
+        $this->assertTrue($this->fullConfig[1]->elements[1]->other_option);
+        $this->assertObjectHasAttribute('value', $this->fullConfig[1]->elements[1]->options[2]);
+
+        $this->fullConfig[1]->elements[1]->options[2]->label = '';
 
         new Config($this->fullConfig);
     }
