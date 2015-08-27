@@ -87,6 +87,7 @@ final class Validator
                             $this->validateChoiceRadioElement($element);
                             $this->validateMaxOneOptionSelectedForChoiceRadioElement($element);
                             $this->validateOtherOptionValueEmptyIfOtherOptionNotSelected($element);
+                            $this->validateOtherOptionNotTheOnlyOption($element);
                             break;
 
                         case 'choice_checkbox':
@@ -187,6 +188,13 @@ final class Validator
             if ($lastOption->selected == false && strlen($lastOption->value) > 0) {
                 throw new ConfigValueException('Other option value must be empty when other option not selected');
             }
+        }
+    }
+
+    private function validateOtherOptionNotTheOnlyOption($element)
+    {
+        if ($element->other_option && count($element->options) == 1) {
+            throw new ConfigValueException('Other option must not be the only option');
         }
     }
 

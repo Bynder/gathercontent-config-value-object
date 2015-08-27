@@ -129,6 +129,8 @@ All elements must be objects. All attributes are required. No additional attribu
 }
 ```
 
+At least two options required if `other_option` is `true`.
+
 ##### Type `choice_checkbox`:
 
 ```javascript

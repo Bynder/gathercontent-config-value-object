@@ -1340,4 +1340,21 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         new Config($this->fullConfig);
     }
 
+    public function testOtherOptionMustNotBeTheOnlyOptionForChoiceRadio()
+    {
+        $this->setExpectedException(ConfigValueException::class, 'Other option must not be the only option');
+
+        $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[1]->type);
+        $this->assertTrue($this->fullConfig[1]->elements[1]->other_option);
+        $this->assertEquals(3, count($this->fullConfig[1]->elements[1]->options));
+        $this->assertObjectHasAttribute('selected', $this->fullConfig[1]->elements[1]->options[2]);
+
+        unset($this->fullConfig[1]->elements[1]->options[1]);
+        unset($this->fullConfig[1]->elements[1]->options[0]);
+
+        $this->assertEquals(1, count($this->fullConfig[1]->elements[1]->options));
+
+        new Config($this->fullConfig);
+    }
+
 }
