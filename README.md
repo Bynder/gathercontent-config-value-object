@@ -13,7 +13,7 @@ Ensure the config adheres to [the rules](#the-rules).
 Run the following command inside your repository:
 
 ```bash
-$ composer require gathercontent/config-value-object:0.3.*
+$ composer require gathercontent/config-value-object:0.2.*
 ```
 ## Usage
 
