@@ -11,6 +11,7 @@ final class Validator
         $this->validateUniqueTabNames($config);
         $this->validateElementFormat($config);
         $this->validateUniqueElementNames($config);
+        $this->validateUniqueOptionNames($config);
     }
 
     private function validateConfigNotEmpty($config)
@@ -86,12 +87,11 @@ final class Validator
                             $this->validateChoiceRadioElement($element);
                             $this->validateMaxOneOptionSelectedForChoiceRadioElement($element);
                             $this->validateOtherOptionValueEmptyIfOtherOptionNotSelected($element);
-                            $this->validateUniqueOptionNames($element);
+                            $this->validateOtherOptionNotTheOnlyOption($element);
                             break;
 
                         case 'choice_checkbox':
                             $this->validateChoiceCheckboxElement($element);
-                            $this->validateUniqueOptionNames($element);
                             break;
                     }
                 }
@@ -114,8 +114,9 @@ final class Validator
         Assertion::string($element->value, 'Element value attribute must be string');
         Assertion::string($element->microcopy, 'Element microcopy attribute must be string');
         Assertion::string($element->limit_type, 'Element limit_type attribute must be string');
-        Assertion::numeric($element->limit, 'Element limit attribute must be numeric');
+        Assertion::integer($element->limit, 'Element limit attribute must be integer');
         Assertion::boolean($element->plain_text, 'Element plain_text attribute must be boolean');
+        Assertion::notEmpty($element->label, 'Element label attribute must not be empty');
         Assertion::inArray($element->limit_type, ['words', 'chars'], 'Element must be of a supported type');
         Assertion::min($element->limit, 0, 'Element limit attribute must not be negative');
     }
@@ -129,6 +130,7 @@ final class Validator
         Assertion::boolean($element->required, 'Element required attribute must be boolean');
         Assertion::string($element->label, 'Element label attribute must be string');
         Assertion::string($element->microcopy, 'Element microcopy attribute must be string');
+        Assertion::notEmpty($element->label, 'Element label attribute must not be empty');
     }
 
     private function validateSectionElement($element)
@@ -138,6 +140,7 @@ final class Validator
         Assertion::eq(count(get_object_vars($element)), 4, 'Element must not have additional attributes');
         Assertion::string($element->title, 'Element title attribute must be string');
         Assertion::string($element->subtitle, 'Element subtitle attribute must be string');
+        Assertion::notEmpty($element->title, 'Element title attribute must not be empty');
     }
 
     private function validateChoiceRadioElement($element)
@@ -153,6 +156,7 @@ final class Validator
         Assertion::string($element->microcopy, 'Element microcopy attribute must be string');
         Assertion::boolean($element->other_option, 'Element other_option attribute must be boolean');
         Assertion::isArray($element->options, 'Element options attribute must be array');
+        Assertion::notEmpty($element->label, 'Element label attribute must not be empty');
         Assertion::notEmpty($element->options, 'Element must have at least one option');
 
         foreach ($element->options as $option) {
@@ -191,6 +195,13 @@ final class Validator
         }
     }
 
+    private function validateOtherOptionNotTheOnlyOption($element)
+    {
+        if ($element->other_option && count($element->options) == 1) {
+            throw new ConfigValueException('Other option must not be the only option');
+        }
+    }
+
     private function validateChoiceCheckboxElement($element)
     {
         Assertion::keyExists(get_object_vars($element), 'required', 'Element required attribute is required');
@@ -202,6 +213,7 @@ final class Validator
         Assertion::string($element->label, 'Element label attribute must be string');
         Assertion::string($element->microcopy, 'Element microcopy attribute must be string');
         Assertion::isArray($element->options, 'Element options attribute must be array');
+        Assertion::notEmpty($element->label, 'Element label attribute must not be empty');
         Assertion::notEmpty($element->options, 'Element must have at least one option');
 
         foreach ($element->options as $option) {
@@ -239,6 +251,7 @@ final class Validator
         Assertion::string($option->label, 'Option label attribute must be string');
         Assertion::boolean($option->selected, 'Option selected attribute must be boolean');
         Assertion::notEmpty($option->name, 'Option name attribute must not be empty');
+        Assertion::notEmpty($option->label, 'Option label attribute must not be empty');
 
         if ($element->other_option && json_encode($option) == json_encode(end($element->options))) {
 
@@ -262,22 +275,32 @@ final class Validator
         Assertion::string($option->label, 'Option label attribute must be string');
         Assertion::boolean($option->selected, 'Option selected attribute must be boolean');
         Assertion::notEmpty($option->name, 'Option name attribute must not be empty');
+        Assertion::notEmpty($option->label, 'Option label attribute must not be empty');
         Assertion::eq(count(get_object_vars($option)), 3, 'Option must not have additional attributes');
     }
 
-    private function validateUniqueOptionNames($element)
+    private function validateUniqueOptionNames($config)
     {
         $names = [];
 
-        if (in_array($element->type, ['choice_radio', 'choice_checkbox'])) {
+        foreach ($config as $tab) {
 
-            foreach ($element->options as $option) {
+            if (count($tab->elements) > 0) {
 
-                if (in_array($option->name, $names)) {
-                    throw new ConfigValueException('Option names must be unique');
+                foreach ($tab->elements as $element) {
+
+                    if (in_array($element->type, ['choice_radio', 'choice_checkbox'])) {
+
+                        foreach ($element->options as $option) {
+
+                            if (in_array($option->name, $names)) {
+                                throw new ConfigValueException('Option names must be unique');
+                            }
+
+                            $names[] = $option->name;
+                        }
+                    }
                 }
-
-                $names[] = $option->name;
             }
         }
     }
