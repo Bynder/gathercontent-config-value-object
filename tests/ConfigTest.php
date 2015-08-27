@@ -88,17 +88,17 @@ class ConfigTest extends PHPUnit_Framework_TestCase
                         'other_option' => true,
                         'options' => [
                             (object)[
-                                'name' => 'op1',
+                                'name' => 'op3',
                                 'label' => 'First choice',
                                 'selected' => false,
                             ],
                             (object)[
-                                'name' => 'op2',
+                                'name' => 'op4',
                                 'label' => 'Second choice',
                                 'selected' => true,
                             ],
                             (object)[
-                                'name' => 'op3',
+                                'name' => 'op5',
                                 'label' => 'Other',
                                 'selected' => false,
                                 'value' => '',
@@ -114,17 +114,17 @@ class ConfigTest extends PHPUnit_Framework_TestCase
                         'other_option' => true,
                         'options' => [
                             (object)[
-                                'name' => 'op1',
+                                'name' => 'op6',
                                 'label' => 'First choice',
                                 'selected' => false,
                             ],
                             (object)[
-                                'name' => 'op2',
+                                'name' => 'op7',
                                 'label' => 'Second choice',
                                 'selected' => false,
                             ],
                             (object)[
-                                'name' => 'op3',
+                                'name' => 'op8',
                                 'label' => 'Other',
                                 'selected' => true,
                                 'value' => 'How goes it?',
@@ -139,12 +139,12 @@ class ConfigTest extends PHPUnit_Framework_TestCase
                         'microcopy' => 'Microcopy',
                         'options' => [
                             (object)[
-                                'name' => 'op1',
+                                'name' => 'op9',
                                 'label' => 'First choice',
                                 'selected' => false,
                             ],
                             (object)[
-                                'name' => 'op2',
+                                'name' => 'op10',
                                 'label' => 'Second choice',
                                 'selected' => false,
                             ],
@@ -158,12 +158,12 @@ class ConfigTest extends PHPUnit_Framework_TestCase
                         'microcopy' => 'Microcopy',
                         'options' => [
                             (object)[
-                                'name' => 'op1',
+                                'name' => 'op11',
                                 'label' => 'First choice',
                                 'selected' => true,
                             ],
                             (object)[
-                                'name' => 'op2',
+                                'name' => 'op12',
                                 'label' => 'Second choice',
                                 'selected' => true,
                             ],
@@ -618,8 +618,6 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidTextLimit1()
     {
-        $this->markTestSkipped('Legacy data currently forces us to accept all numeric values instead of just integers');
-
         $this->setExpectedException(ConfigValueException::class, 'Element limit attribute must be integer');
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
@@ -635,14 +633,14 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
-        $this->fullConfig[0]->elements[0]->limit = '-50';
+        $this->fullConfig[0]->elements[0]->limit = -50;
 
         new Config($this->fullConfig);
     }
 
     public function testInvalidTextLimit3()
     {
-        $this->setExpectedException(ConfigValueException::class, 'Element limit attribute must be numeric');
+        $this->setExpectedException(ConfigValueException::class, 'Element limit attribute must be integer');
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
@@ -653,7 +651,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidTextLimit4()
     {
-        $this->setExpectedException(ConfigValueException::class, 'Element limit attribute must be numeric');
+        $this->setExpectedException(ConfigValueException::class, 'Element limit attribute must be integer');
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
@@ -669,6 +667,17 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
         $this->fullConfig[0]->elements[0]->plain_text = 'false';
+
+        new Config($this->fullConfig);
+    }
+
+    public function testEmptyTextLabel()
+    {
+        $this->setExpectedException(ConfigValueException::class, 'Element label attribute must not be empty');
+
+        $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
+
+        $this->fullConfig[0]->elements[0]->label = '';
 
         new Config($this->fullConfig);
     }
@@ -750,6 +759,17 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         new Config($this->fullConfig);
     }
 
+    public function testEmptyFilesLabel()
+    {
+        $this->setExpectedException(ConfigValueException::class, 'Element label attribute must not be empty');
+
+        $this->assertEquals('files', $this->fullConfig[0]->elements[2]->type);
+
+        $this->fullConfig[0]->elements[2]->label = '';
+
+        new Config($this->fullConfig);
+    }
+
     public function testMissingSectionTitle()
     {
         $this->setExpectedException(ConfigValueException::class, 'Element title attribute is required');
@@ -801,6 +821,17 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('section', $this->fullConfig[0]->elements[3]->type);
 
         $this->fullConfig[0]->elements[3]->subtitle = null;
+
+        new Config($this->fullConfig);
+    }
+
+    public function testEmptySectionTitle()
+    {
+        $this->setExpectedException(ConfigValueException::class, 'Element title attribute must not be empty');
+
+        $this->assertEquals('section', $this->fullConfig[0]->elements[3]->type);
+
+        $this->fullConfig[0]->elements[3]->title = '';
 
         new Config($this->fullConfig);
     }
@@ -978,6 +1009,17 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
         $this->fullConfig[1]->elements[0]->options = 'none';
+
+        new Config($this->fullConfig);
+    }
+
+    public function testEmptyChoiceRadioLabel()
+    {
+        $this->setExpectedException(ConfigValueException::class, 'Element label attribute must not be empty');
+
+        $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
+
+        $this->fullConfig[1]->elements[0]->label = '';
 
         new Config($this->fullConfig);
     }
@@ -1170,6 +1212,17 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         new Config($this->fullConfig);
     }
 
+    public function testEmptyChoiceCheckboxLabel()
+        {
+            $this->setExpectedException(ConfigValueException::class, 'Element label attribute must not be empty');
+
+            $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
+
+            $this->fullConfig[1]->elements[3]->label = '';
+
+            new Config($this->fullConfig);
+        }
+
     public function testInvalidChoiceCheckboxOptionName()
     {
         $this->setExpectedException(ConfigValueException::class, 'Option name attribute must be string');
@@ -1203,6 +1256,17 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         new Config($this->fullConfig);
     }
 
+    public function testEmptyChoiceCheckboxOptionLabel()
+    {
+        $this->setExpectedException(ConfigValueException::class, 'Option label attribute must not be empty');
+
+        $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
+
+        $this->fullConfig[1]->elements[3]->options[0]->label = '';
+
+        new Config($this->fullConfig);
+    }
+
     public function testNonUniqueElementNames()
     {
         $this->setExpectedException(ConfigValueException::class, 'Element names must be unique');
@@ -1227,8 +1291,6 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testItemWideNonUniqueOptionNames()
     {
-        $this->markTestSkipped('Legacy data currently forces us to allow reuse of option name between different elements');
-
         $this->setExpectedException(ConfigValueException::class, 'Option names must be unique');
 
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
@@ -1330,6 +1392,31 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         new Config($this->fullConfig);
     }
 
+    public function testEmptyOptionLabelForChoiceRadio()
+    {
+        $this->setExpectedException(ConfigValueException::class, 'Option label attribute must not be empty');
+
+        $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
+        $this->assertFalse($this->fullConfig[1]->elements[0]->other_option);
+
+        $this->fullConfig[1]->elements[0]->options[1]->label = '';
+
+        new Config($this->fullConfig);
+    }
+
+    public function testEmptyOtherOptionLabelForChoiceRadio()
+    {
+        $this->setExpectedException(ConfigValueException::class, 'Option label attribute must not be empty');
+
+        $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[1]->type);
+        $this->assertTrue($this->fullConfig[1]->elements[1]->other_option);
+        $this->assertObjectHasAttribute('value', $this->fullConfig[1]->elements[1]->options[2]);
+
+        $this->fullConfig[1]->elements[1]->options[2]->label = '';
+
+        new Config($this->fullConfig);
+    }
+
     public function testOtherOptionValueEmptyIfOtherOptionNotSelectedForChoiceRadio()
     {
         $this->setExpectedException(ConfigValueException::class, 'Other option value must be empty when other option not selected');
@@ -1340,6 +1427,23 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($this->fullConfig[1]->elements[1]->options[2]->selected);
 
         $this->fullConfig[1]->elements[1]->options[2]->value = 'this value should be empty';
+
+        new Config($this->fullConfig);
+    }
+
+    public function testOtherOptionMustNotBeTheOnlyOptionForChoiceRadio()
+    {
+        $this->setExpectedException(ConfigValueException::class, 'Other option must not be the only option');
+
+        $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[1]->type);
+        $this->assertTrue($this->fullConfig[1]->elements[1]->other_option);
+        $this->assertEquals(3, count($this->fullConfig[1]->elements[1]->options));
+        $this->assertObjectHasAttribute('selected', $this->fullConfig[1]->elements[1]->options[2]);
+
+        unset($this->fullConfig[1]->elements[1]->options[1]);
+        unset($this->fullConfig[1]->elements[1]->options[0]);
+
+        $this->assertEquals(1, count($this->fullConfig[1]->elements[1]->options));
 
         new Config($this->fullConfig);
     }
