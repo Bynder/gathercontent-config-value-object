@@ -178,7 +178,7 @@ final class Validator
             }
 
             if ($selectedCounter > 1) {
-                throw new ConfigValueException('Element checkbox_radio must have at most one option selected');
+                throw new ConfigValueException('Element choice_radio must have at most one option selected');
             }
         }
     }

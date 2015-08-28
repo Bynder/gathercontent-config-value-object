@@ -1347,7 +1347,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMultipleOptionsSelectedForChoiceRadio()
     {
-        $this->setExpectedException('GatherContent\ConfigValueObject\ConfigValueException', 'Element checkbox_radio must have at most one option selected');
+        $this->setExpectedException('GatherContent\ConfigValueObject\ConfigValueException', 'Element choice_radio must have at most one option selected');
 
         $this->assertEquals('choice_radio', $this->fullConfig[1]->elements[0]->type);
 
