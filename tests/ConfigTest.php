@@ -1448,4 +1448,19 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         new Config($this->fullConfig);
     }
 
+    public function testZeroDigitInVariousPlaces()
+    {
+        $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
+
+        $this->fullConfig[0]->label = '0';
+        $this->fullConfig[0]->name = '0';
+        $this->fullConfig[0]->elements[0]->label = '0';
+        $this->fullConfig[0]->elements[0]->name = '0';
+
+        $config = new Config($this->fullConfig);
+        $result = $config->toArray();
+
+        $this->assertEquals($this->fullConfig, $result);
+    }
+
 }
