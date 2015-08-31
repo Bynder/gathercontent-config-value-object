@@ -34,8 +34,8 @@ final class Validator
             Assertion::string($tab->name, 'Tab name attribute must be string');
             Assertion::boolean($tab->hidden, 'Tab hidden attribute must be boolean');
             Assertion::isArray($tab->elements, 'Tab elements attribute must be array');
-            Assertion::notEmpty($tab->label, 'Tab label attribute must not be empty');
-            Assertion::notEmpty($tab->name, 'Tab name attribute must not be empty');
+            Assertion::notBlank($tab->label, 'Tab label attribute must not be empty');
+            Assertion::notBlank($tab->name, 'Tab name attribute must not be empty');
         }
     }
 
@@ -67,7 +67,7 @@ final class Validator
                     Assertion::string($element->type, 'Element type attribute must be string');
                     Assertion::string($element->name, 'Element name attribute must be string');
                     Assertion::inArray($element->type, array('text', 'files', 'section', 'choice_radio', 'choice_checkbox'), 'Element must be of a supported type');
-                    Assertion::notEmpty($element->name, 'Element name attribute must not be empty');
+                    Assertion::notBlank($element->name, 'Element name attribute must not be empty');
 
                     switch ($element->type) {
 
@@ -116,7 +116,7 @@ final class Validator
         Assertion::string($element->limit_type, 'Element limit_type attribute must be string');
         Assertion::integer($element->limit, 'Element limit attribute must be integer');
         Assertion::boolean($element->plain_text, 'Element plain_text attribute must be boolean');
-        Assertion::notEmpty($element->label, 'Element label attribute must not be empty');
+        Assertion::notBlank($element->label, 'Element label attribute must not be empty');
         Assertion::inArray($element->limit_type, array('words', 'chars'), 'Element must be of a supported type');
         Assertion::min($element->limit, 0, 'Element limit attribute must not be negative');
     }
@@ -130,7 +130,7 @@ final class Validator
         Assertion::boolean($element->required, 'Element required attribute must be boolean');
         Assertion::string($element->label, 'Element label attribute must be string');
         Assertion::string($element->microcopy, 'Element microcopy attribute must be string');
-        Assertion::notEmpty($element->label, 'Element label attribute must not be empty');
+        Assertion::notBlank($element->label, 'Element label attribute must not be empty');
     }
 
     private function validateSectionElement($element)
@@ -140,7 +140,7 @@ final class Validator
         Assertion::eq(count(get_object_vars($element)), 4, 'Element must not have additional attributes');
         Assertion::string($element->title, 'Element title attribute must be string');
         Assertion::string($element->subtitle, 'Element subtitle attribute must be string');
-        Assertion::notEmpty($element->title, 'Element title attribute must not be empty');
+        Assertion::notBlank($element->title, 'Element title attribute must not be empty');
     }
 
     private function validateChoiceRadioElement($element)
@@ -156,7 +156,7 @@ final class Validator
         Assertion::string($element->microcopy, 'Element microcopy attribute must be string');
         Assertion::boolean($element->other_option, 'Element other_option attribute must be boolean');
         Assertion::isArray($element->options, 'Element options attribute must be array');
-        Assertion::notEmpty($element->label, 'Element label attribute must not be empty');
+        Assertion::notBlank($element->label, 'Element label attribute must not be empty');
         Assertion::notEmpty($element->options, 'Element must have at least one option');
 
         foreach ($element->options as $option) {
@@ -213,7 +213,7 @@ final class Validator
         Assertion::string($element->label, 'Element label attribute must be string');
         Assertion::string($element->microcopy, 'Element microcopy attribute must be string');
         Assertion::isArray($element->options, 'Element options attribute must be array');
-        Assertion::notEmpty($element->label, 'Element label attribute must not be empty');
+        Assertion::notBlank($element->label, 'Element label attribute must not be empty');
         Assertion::notEmpty($element->options, 'Element must have at least one option');
 
         foreach ($element->options as $option) {
@@ -250,8 +250,8 @@ final class Validator
         Assertion::string($option->name, 'Option name attribute must be string');
         Assertion::string($option->label, 'Option label attribute must be string');
         Assertion::boolean($option->selected, 'Option selected attribute must be boolean');
-        Assertion::notEmpty($option->name, 'Option name attribute must not be empty');
-        Assertion::notEmpty($option->label, 'Option label attribute must not be empty');
+        Assertion::notBlank($option->name, 'Option name attribute must not be empty');
+        Assertion::notBlank($option->label, 'Option label attribute must not be empty');
 
         if ($element->other_option && json_encode($option) == json_encode(end($element->options))) {
 
@@ -274,8 +274,8 @@ final class Validator
         Assertion::string($option->name, 'Option name attribute must be string');
         Assertion::string($option->label, 'Option label attribute must be string');
         Assertion::boolean($option->selected, 'Option selected attribute must be boolean');
-        Assertion::notEmpty($option->name, 'Option name attribute must not be empty');
-        Assertion::notEmpty($option->label, 'Option label attribute must not be empty');
+        Assertion::notBlank($option->name, 'Option name attribute must not be empty');
+        Assertion::notBlank($option->label, 'Option label attribute must not be empty');
         Assertion::eq(count(get_object_vars($option)), 3, 'Option must not have additional attributes');
     }
 
