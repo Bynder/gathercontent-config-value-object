@@ -607,7 +607,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidTextLimitType()
     {
-        $this->setExpectedException('GatherContent\ConfigValueObject\ConfigValueException', 'Element must be of a supported type');
+        $this->setExpectedException('GatherContent\ConfigValueObject\ConfigValueException', 'Element limit_type attribute value must be either "words" or "chars"');
 
         $this->assertEquals('text', $this->fullConfig[0]->elements[0]->type);
 
