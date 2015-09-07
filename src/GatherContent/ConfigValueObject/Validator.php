@@ -117,7 +117,7 @@ final class Validator
         Assertion::integer($element->limit, 'Element limit attribute must be integer');
         Assertion::boolean($element->plain_text, 'Element plain_text attribute must be boolean');
         Assertion::notBlank($element->label, 'Element label attribute must not be empty');
-        Assertion::inArray($element->limit_type, array('words', 'chars'), 'Element must be of a supported type');
+        Assertion::inArray($element->limit_type, array('words', 'chars'), 'Element limit_type attribute value must be either "words" or "chars"');
         Assertion::min($element->limit, 0, 'Element limit attribute must not be negative');
     }
 
