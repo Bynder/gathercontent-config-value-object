@@ -1289,14 +1289,12 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         new Config($this->fullConfig);
     }
 
-    public function testItemWideNonUniqueOptionNames()
+    public function testOptionNamesAreAllowedToBeReusedAccrossElements()
     {
-        $this->setExpectedException('GatherContent\ConfigValueObject\ConfigValueException', 'Option names must be unique');
-
         $this->assertEquals('choice_checkbox', $this->fullConfig[1]->elements[3]->type);
 
         $this->fullConfig[1]->elements[0]->options[0]->name = 'op12345';
-        $this->fullConfig[1]->elements[1]->options[1]->name = 'op12345';
+        $this->fullConfig[1]->elements[1]->options[0]->name = 'op12345';
 
         new Config($this->fullConfig);
     }
