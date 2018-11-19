@@ -6,7 +6,7 @@ Ensure the config adheres to [the rules](#the-rules).
 
 ## Requirements
 
-- PHP 5.3.0 or later
+- PHP 5.3.0 or later (recommend at least PHP 7.1)
 
 ## Installation
 
