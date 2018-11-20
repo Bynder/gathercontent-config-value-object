@@ -281,8 +281,6 @@ final class Validator
 
     private function validateUniqueOptionNames($config)
     {
-        $names = array();
-
         foreach ($config as $tab) {
 
             if (count($tab->elements) > 0) {
@@ -290,6 +288,8 @@ final class Validator
                 foreach ($tab->elements as $element) {
 
                     if (in_array($element->type, array('choice_radio', 'choice_checkbox'))) {
+
+                        $names = array();
 
                         foreach ($element->options as $option) {
 
