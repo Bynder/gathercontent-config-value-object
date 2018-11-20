@@ -3,8 +3,24 @@
     "description": "Validate item config for GatherContent",
     "authors": [
         {
-            "name": "Peter Legierski",
-            "email": "peter@gathercontent.com"
+            "name": "Richard Bagshaw",
+            "email": "richard@gathercontent.com"
+        },
+        {
+            "name": "Mat Chapman",
+            "email": "mat@gathercontent.com"
+        },
+        {
+            "name": "Hugh Downer",
+            "email": "hugh@gathercontent.com"
+        },
+        {
+            "name": "Rik Heywood",
+            "email": "rik@gathercontent.com"
+        },
+        {
+            "name": "Pete McFarlane",
+            "email": "pete@gathercontent.com"
         }
     ],
     "require": {
